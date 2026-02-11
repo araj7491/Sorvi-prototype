@@ -29,3 +29,16 @@ export interface ChartData {
   name: string
   [key: string]: string | number
 }
+
+export type Layout = 'modern' | 'classic'
+
+export interface SidebarNavItem {
+  id: string
+  label: string
+  icon: React.ComponentType
+  href: string
+  color: string
+  isActive?: boolean
+}
+
+export * from './grid'

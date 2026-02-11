@@ -13,11 +13,11 @@ export function KPICard({ title, value, change, icon, variant = 'default' }: KPI
   }
 
   return (
-    <Card className={cn('min-h-[140px] transition-shadow hover:shadow-md', variantStyles[variant])}>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+    <Card className={cn('min-h-[140px] max-h-[200px] transition-shadow hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2', variantStyles[variant])}>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4 sm:p-6">
         {icon && <div className="text-muted-foreground">{icon}</div>}
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-4 sm:p-6 pt-0">
         <div className="space-y-1">
           <p className="text-sm text-muted-foreground">{title}</p>
           <p className="text-3xl font-semibold">{value}</p>

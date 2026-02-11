@@ -42,7 +42,7 @@ export const financeKPIs: Record<string, KPIData> = {
       period: 'vs last month',
     },
     icon: <TrendUp size={24} weight="duotone" className="text-green-500" />,
-    variant: 'success',
+    variant: 'default',
   },
 }
 

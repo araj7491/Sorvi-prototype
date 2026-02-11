@@ -18,15 +18,15 @@ interface DataTableProps {
 
 export function DataTable({ title, columns, data, className }: DataTableProps) {
   return (
-    <Card className={cn('col-span-1 md:col-span-2 lg:col-span-3', className)}>
+    <Card className={cn('transition-shadow hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2', className)}>
       {title && (
-        <CardHeader>
+        <CardHeader className="p-4 sm:p-6">
           <CardTitle className="text-lg font-semibold">{title}</CardTitle>
         </CardHeader>
       )}
-      <CardContent>
-        <div className="overflow-x-auto">
-          <table className="w-full">
+      <CardContent className="p-4 sm:p-6 pt-0">
+        <div className="overflow-x-auto overflow-y-auto max-h-[600px] min-h-[200px]">
+          <table className="w-full min-w-[600px]">
             <thead>
               <tr className="border-b">
                 {columns.map((column) => (

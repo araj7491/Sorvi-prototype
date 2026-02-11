@@ -1,16 +1,8 @@
 import { MainLayout } from '@/components/layout/MainLayout'
-import { GridLayout } from '@/components/dashboard/GridLayout'
-import { KPICard } from '@/components/dashboard/KPICard'
-import { ChartWidget } from '@/components/dashboard/ChartWidget'
-import { DataTable } from '@/components/common/DataTable'
-import {
-  financeTabs,
-  financeKPIs,
-  cashFlowData,
-  cashTrendData,
-  recentTransactions,
-  transactionColumns,
-} from '@/data/mockFinanceData.tsx'
+import { DashboardGridProvider } from '@/providers/DashboardGridProvider'
+import { SizeGroupGrid } from '@/components/dashboard/SizeGroupGrid'
+import { financeTabs } from '@/data/mockFinanceData.tsx'
+import { createFinanceLayout } from '@/config/defaultLayouts'
 
 export function Finance() {
   return (
@@ -27,41 +19,13 @@ export function Finance() {
           <p className="text-muted-foreground">This Month</p>
         </div>
 
-        {/* Dashboard Grid */}
-        <GridLayout>
-          {/* KPI Cards */}
-          <KPICard {...financeKPIs.receivables} />
-          <KPICard {...financeKPIs.payables} />
-          <KPICard {...financeKPIs.netExposure} />
-
-          {/* Cash Flow Chart */}
-          <ChartWidget
-            type="bar"
-            title="Cash Flow"
-            data={cashFlowData}
-            dataKeys={['inflow', 'outflow']}
-            colors={['#3b82f6', '#f59e0b']}
-            height={300}
-          />
-
-          {/* Cash Trend Chart */}
-          <ChartWidget
-            type="area"
-            title="Cash Balance Trend"
-            data={cashTrendData}
-            dataKeys={['balance']}
-            colors={['#10b981']}
-            height={300}
-          />
-
-          {/* Recent Transactions Table */}
-          <DataTable
-            title="Recent Transactions"
-            columns={transactionColumns}
-            data={recentTransactions}
-            className="col-span-1 md:col-span-2 lg:col-span-3 2xl:col-span-4"
-          />
-        </GridLayout>
+        {/* Dashboard Grid with Size-Grouped Drag & Drop */}
+        <DashboardGridProvider
+          dashboardId="finance-overview"
+          defaultItems={createFinanceLayout()}
+        >
+          <SizeGroupGrid />
+        </DashboardGridProvider>
       </div>
     </MainLayout>
   )

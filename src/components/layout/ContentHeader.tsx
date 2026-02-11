@@ -1,14 +1,18 @@
-import { Star } from 'lucide-react'
+import { useState } from 'react'
+import { LayoutGrid } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { AllModulesModal } from '@/components/common/AllModulesModal'
 import type { Tab } from '@/types'
 
 interface ContentHeaderProps {
   tabs: Tab[]
   activeTab?: string
+  currentModule?: string
 }
 
-export function ContentHeader({ tabs, activeTab }: ContentHeaderProps) {
+export function ContentHeader({ tabs, activeTab, currentModule }: ContentHeaderProps) {
+  const [showAllModules, setShowAllModules] = useState(false)
   return (
     <div className="border-b bg-background">
       <div className="container mx-auto px-4">
@@ -33,13 +37,19 @@ export function ContentHeader({ tabs, activeTab }: ContentHeaderProps) {
           ))}
           <Button
             variant="ghost"
-            size="icon"
-            className="ml-auto h-9 w-9 shrink-0"
+            onClick={() => setShowAllModules(true)}
+            className="ml-auto h-9 shrink-0 gap-2 px-3 text-sm"
           >
-            <Star className="h-4 w-4" />
+            <LayoutGrid className="h-4 w-4" />
+            <span className="hidden sm:inline">All Modules</span>
           </Button>
         </div>
       </div>
+      <AllModulesModal
+        open={showAllModules}
+        onOpenChange={setShowAllModules}
+        currentModule={currentModule}
+      />
     </div>
   )
 }

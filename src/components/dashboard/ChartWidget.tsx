@@ -28,7 +28,7 @@ export function ChartWidget({
   title,
   type,
   data,
-  height = 320,
+  height = 300,
   dataKeys = [],
   colors = ['#3b82f6', '#a78bfa', '#10b981'],
 }: ChartWidgetProps) {
@@ -120,11 +120,11 @@ export function ChartWidget({
   }
 
   return (
-    <Card className="col-span-1 md:col-span-2 transition-shadow hover:shadow-md">
-      <CardHeader>
+    <Card className="transition-shadow hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+      <CardHeader className="p-4 sm:p-6">
         <CardTitle className="text-lg font-semibold">{title}</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-4 sm:p-6 pt-0">
         <ResponsiveContainer width="100%" height={height}>
           {renderChart()}
         </ResponsiveContainer>
