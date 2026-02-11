@@ -10,21 +10,40 @@ interface SidebarProps {
   fixed?: boolean
   isOpen?: boolean
   onToggle?: () => void
+  onLinkClick?: () => void
 }
 
-export function Sidebar({ tabs, activeTab, fixed = false, isOpen = true, onToggle }: SidebarProps) {
+export function Sidebar({ tabs, activeTab, fixed = false, isOpen = true, onToggle, onLinkClick }: SidebarProps) {
   return (
-    <aside className={cn(
-      "hidden md:flex flex-col z-10 border-r bg-background transition-all duration-300",
-      fixed
-        ? "fixed left-0 top-16 bottom-0 h-auto"
-        : "sticky top-0 h-[calc(100vh-4rem)]",
-      isOpen
-        ? "w-48 lg:w-60"
-        : "w-16"
-    )}>
-      {/* Scrollable container for navigation */}
-      <div className="flex-1 min-h-0 overflow-y-auto">
+    <>
+      {/* Mobile backdrop */}
+      {isOpen && (
+        <div
+          className="md:hidden fixed inset-0 top-16 bg-black/50 z-30 transition-opacity"
+          onClick={onToggle}
+          aria-hidden="true"
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside className={cn(
+        "flex flex-col border-r bg-background transition-all duration-300",
+        // Base mobile styles: fixed drawer
+        "fixed left-0 top-16 bottom-0 h-auto z-40 w-48",
+        // Mobile: slide in/out based on isOpen
+        !isOpen && "-translate-x-full",
+        isOpen && "translate-x-0",
+        // Desktop overrides
+        "md:translate-x-0 md:z-10",
+        fixed
+          ? "md:fixed"
+          : "md:sticky md:top-0 md:h-[calc(100vh-4rem)]",
+        // Desktop width
+        "md:w-48 lg:w-60",
+        !isOpen && "md:w-16"
+      )}>
+        {/* Scrollable container for navigation */}
+        <div className="flex-1 min-h-0 overflow-y-auto">
         <nav className="p-4 space-y-1">
           {tabs.map((tab) => {
             const isActive = activeTab === tab.id
@@ -33,6 +52,7 @@ export function Sidebar({ tabs, activeTab, fixed = false, isOpen = true, onToggl
               <Link
                 key={tab.id}
                 to={tab.href}
+                onClick={() => onLinkClick?.()}
                 className={cn(
                   "flex items-center gap-3 px-4 py-2.5 rounded-md transition-colors text-sm",
                   "hover:bg-accent hover:text-accent-foreground",

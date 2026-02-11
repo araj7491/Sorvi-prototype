@@ -1,13 +1,53 @@
-import { CurrencyDollar, TrendUp, Wallet } from '@phosphor-icons/react'
+import {
+  CurrencyDollar,
+  TrendUp,
+  Wallet,
+  ChartPieSlice,
+  ShoppingCart,
+  ShoppingBag,
+  FileText,
+  Money,
+  ChartBar
+} from '@phosphor-icons/react'
 import type { KPIData, ChartData } from '@/types'
 
 export const financeTabs = [
-  { id: 'overview', label: 'Overview', href: '/finance' },
-  { id: 'sales', label: 'Sales Orders', href: '/finance/sales' },
-  { id: 'purchases', label: 'Purchase Orders', href: '/finance/purchases' },
-  { id: 'invoices', label: 'Invoices', href: '/finance/invoices' },
-  { id: 'payments', label: 'Payments', href: '/finance/payments' },
-  { id: 'reports', label: 'Reports', href: '/finance/reports' },
+  {
+    id: 'overview',
+    label: 'Overview',
+    href: '/finance',
+    icon: <ChartPieSlice size={20} weight="duotone" />
+  },
+  {
+    id: 'sales',
+    label: 'Sales Orders',
+    href: '/finance/sales',
+    icon: <ShoppingCart size={20} weight="duotone" />
+  },
+  {
+    id: 'purchases',
+    label: 'Purchase Orders',
+    href: '/finance/purchases',
+    icon: <ShoppingBag size={20} weight="duotone" />
+  },
+  {
+    id: 'invoices',
+    label: 'Invoices',
+    href: '/finance/invoices',
+    icon: <FileText size={20} weight="duotone" />
+  },
+  {
+    id: 'payments',
+    label: 'Payments',
+    href: '/finance/payments',
+    icon: <Money size={20} weight="duotone" />
+  },
+  {
+    id: 'reports',
+    label: 'Reports',
+    href: '/finance/reports',
+    icon: <ChartBar size={20} weight="duotone" />
+  },
 ]
 
 export const financeKPIs: Record<string, KPIData> = {
