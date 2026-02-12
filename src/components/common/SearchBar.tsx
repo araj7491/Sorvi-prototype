@@ -24,12 +24,12 @@ export function SearchBar() {
 
   return (
     <div className="relative hidden md:block w-full max-w-md">
-      <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+      <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground z-10" />
       <Input
         ref={inputRef}
         type="search"
         placeholder="Search... (⌘K)"
-        className="pl-9 pr-4"
+        className="pl-9 pr-4 bg-white/90 dark:bg-gray-950/90 border-white/40 dark:border-gray-800/40 backdrop-blur-sm"
       />
     </div>
   )

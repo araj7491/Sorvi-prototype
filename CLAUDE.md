@@ -36,6 +36,27 @@ Sorvi is a React-based business management application prototype with multiple m
   - `ContentHeader.tsx` - Tab navigation for content areas
   - `Footer.tsx` - Application footer
 
+#### Content Area Dimension Formulas
+The relationship between content area dimensions in Modern vs Classic layouts:
+
+**Height:**
+```
+Height of content area in Modern view + Content header height in Modern view
+= Height of content area in Classic view
+```
+- Modern view: ContentHeader is a separate horizontal bar above the content area
+- Classic view: ContentHeader tabs are integrated into the Sidebar, so content area is taller
+
+**Width:**
+```
+Width of content area in Modern view - Width of Sidebar in Classic view
+= Width of content area in Classic view
+```
+- Modern view: Content area spans full width (no sidebar)
+- Classic view: Sidebar takes horizontal space, reducing content area width
+
+**IMPORTANT**: When adjusting spacing, padding, or layout dimensions, ensure both layouts provide equivalent visual space and consistent user experience despite their structural differences.
+
 ### 3. UI Component Library
 
 #### Component Pattern

@@ -13,12 +13,6 @@ export function Finance() {
       currentModule="finance"
     >
       <div className="container mx-auto space-y-6">
-        {/* Page Header */}
-        <div>
-          <h1 className="text-2xl font-semibold">Finance Overview</h1>
-          <p className="text-muted-foreground">This Month</p>
-        </div>
-
         {/* Dashboard Grid with Size-Grouped Drag & Drop */}
         <DashboardGridProvider
           dashboardId="finance-overview"

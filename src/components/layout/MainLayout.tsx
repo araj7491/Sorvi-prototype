@@ -3,6 +3,7 @@ import { UniversalHeader } from './UniversalHeader'
 import { ContentHeader } from './ContentHeader'
 import { Footer } from './Footer'
 import { ClassicLayout } from './ClassicLayout'
+import { cn } from '@/lib/utils'
 import type { Tab } from '@/types'
 
 interface MainLayoutProps {
@@ -35,16 +36,23 @@ export function MainLayout({
     )
   }
 
-  // Modern layout (existing code)
+  // Modern layout
+  const hasContentHeader = showContentHeader && contentHeaderTabs && contentHeaderTabs.length > 0
+
   return (
-    <div className="min-h-screen flex flex-col">
-      <UniversalHeader currentModule={currentModule} />
-      {showContentHeader && contentHeaderTabs.length > 0 && (
-        <ContentHeader tabs={contentHeaderTabs} activeTab={activeTab} currentModule={currentModule} />
-      )}
-      <main className="flex-1 overflow-auto p-4 md:p-6 bg-background">
-        {children}
-      </main>
+    <div className="h-screen flex flex-col overflow-hidden">
+      <UniversalHeader currentModule={currentModule} fixed={false} />
+      <div className="flex-1 overflow-y-auto bg-background relative">
+        {hasContentHeader && (
+          <ContentHeader tabs={contentHeaderTabs} activeTab={activeTab} currentModule={currentModule} />
+        )}
+        <div className={cn(
+          "px-4 pb-4 md:px-6 md:pb-6",
+          hasContentHeader ? "pt-16" : "pt-4 md:pt-6"
+        )}>
+          {children}
+        </div>
+      </div>
       <Footer />
     </div>
   )

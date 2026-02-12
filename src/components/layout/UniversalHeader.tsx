@@ -6,6 +6,7 @@ import { ProfileMenu } from '@/components/common/ProfileMenu'
 import { ThemeToggle } from '@/components/common/ThemeToggle'
 import { Search } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
 interface UniversalHeaderProps {
   currentModule?: string
@@ -14,17 +15,19 @@ interface UniversalHeaderProps {
 
 export function UniversalHeader({ currentModule, fixed = false }: UniversalHeaderProps) {
   return (
-    <header className={fixed ? "fixed top-0 left-0 right-0 z-50 border-b border-border/40 bg-background/70 backdrop-blur-xl supports-[backdrop-filter]:bg-background/50" : "sticky top-0 z-50 border-b border-border/40 bg-background/70 backdrop-blur-xl supports-[backdrop-filter]:bg-background/50"}>
+    <header className={cn(
+      "top-0 left-0 right-0 z-50 h-16 border-b border-border shadow-sm bg-header text-header-foreground",
+      fixed ? "fixed" : "sticky"
+    )}>
       <div className="flex h-16 items-center px-4 gap-4">
         {/* Left Section: Logo + App Switcher */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1.5">
           <Link to="/" className="flex items-center gap-2 group">
             <div className="h-8 w-8 rounded-md bg-white dark:bg-[#0E0918] flex items-center justify-center p-1 transition-opacity group-hover:opacity-80">
               <img src="/sorvi-logo.png" alt="Sorvi Logo" className="h-full w-full object-contain" />
             </div>
             <span className="hidden md:inline font-semibold text-lg group-hover:text-primary transition-colors">Sorvi</span>
           </Link>
-          <div className="h-6 w-px bg-border hidden md:block" />
           <AppSwitcher currentModule={currentModule} />
         </div>
 

@@ -7,7 +7,8 @@ import {
   ShoppingBag,
   FileText,
   Money,
-  ChartBar
+  ChartBar,
+  Receipt
 } from '@phosphor-icons/react'
 import type { KPIData, ChartData } from '@/types'
 
@@ -17,6 +18,12 @@ export const financeTabs = [
     label: 'Overview',
     href: '/finance',
     icon: <ChartPieSlice size={20} weight="duotone" />
+  },
+  {
+    id: 'quotes',
+    label: 'Quotes',
+    href: '/finance/quotes',
+    icon: <Receipt size={20} weight="duotone" />
   },
   {
     id: 'sales',

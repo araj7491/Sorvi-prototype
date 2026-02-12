@@ -21,8 +21,8 @@ export function AppSwitcher({ currentModule = 'finance', onModuleChange }: AppSw
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="gap-2 px-3">
-          <Icon className={`h-5 w-5 ${current.color}`} weight="duotone" />
-          <span className="font-medium">{current.name}</span>
+          <Icon className={`h-5 w-5 ${current.color}`} weight="bold" />
+          <span className="font-bold">{current.name}</span>
           <ChevronDown className="h-4 w-4 text-muted-foreground" />
         </Button>
       </DropdownMenuTrigger>

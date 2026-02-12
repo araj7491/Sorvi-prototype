@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
-import { List } from '@phosphor-icons/react'
+import { Menu } from 'lucide-react'
 import { Sidebar } from './Sidebar'
 import { UniversalHeader } from './UniversalHeader'
 import { Footer } from './Footer'
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 import type { Tab } from '@/types'
 
 interface ClassicLayoutProps {
@@ -49,50 +50,50 @@ export function ClassicLayout({
   }, [sidebarOpen])
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="h-screen flex flex-col overflow-hidden">
       {/* Fixed UniversalHeader */}
       <UniversalHeader currentModule={currentModule} fixed={true} />
 
-      {/* Sidebar + Content area below fixed header */}
-      <div className="flex flex-1 pt-16">
+      {/* Fixed Sidebar - positioned between header and footer */}
+      {hasSidebar && (
+        <Sidebar
+          tabs={contentHeaderTabs}
+          activeTab={activeTab}
+          isOpen={sidebarOpen}
+          onToggle={() => setSidebarOpen(!sidebarOpen)}
+          onLinkClick={() => {
+            // Close sidebar on mobile when link is clicked
+            if (window.innerWidth < 768) {
+              setSidebarOpen(false)
+            }
+          }}
+        />
+      )}
+
+      {/* Content area - with padding for fixed header, footer, and sidebar */}
+      <main className={cn(
+        "flex-1 overflow-y-auto px-4 pt-20 pb-4 md:px-6 md:pb-6 bg-background relative",
+        // Left padding for fixed sidebar on desktop
+        hasSidebar && sidebarOpen && "md:pl-52 lg:pl-64",
+        hasSidebar && !sidebarOpen && "md:pl-20",
+      )}>
         {/* Mobile menu button - only visible when there are tabs */}
-        {hasSidebar && (
+        {hasSidebar && !sidebarOpen && (
           <Button
             variant="ghost"
             size="icon"
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="md:hidden fixed left-4 top-20 z-50 h-10 w-10 bg-background border shadow-md"
+            className="md:hidden fixed left-4 top-20 h-9 w-9 z-10"
             aria-label="Toggle sidebar"
           >
-            <List size={20} weight="bold" />
+            <Menu className="h-5 w-5" />
           </Button>
         )}
+        {children}
+      </main>
 
-        {/* Overlay Sidebar - only shows when there are tabs */}
-        {hasSidebar && (
-          <Sidebar
-            tabs={contentHeaderTabs}
-            activeTab={activeTab}
-            fixed={true}
-            isOpen={sidebarOpen}
-            onToggle={() => setSidebarOpen(!sidebarOpen)}
-            onLinkClick={() => {
-              // Close sidebar on mobile when link is clicked
-              if (window.innerWidth < 768) {
-                setSidebarOpen(false)
-              }
-            }}
-          />
-        )}
-
-        {/* Content area - full width as sidebar overlays */}
-        <div className="flex-1 flex flex-col">
-          <main className="flex-1 overflow-auto p-4 md:p-6 bg-background">
-            {children}
-          </main>
-          <Footer />
-        </div>
-      </div>
+      {/* Fixed Footer */}
+      <Footer />
     </div>
   )
 }
