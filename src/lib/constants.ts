@@ -11,27 +11,31 @@ export const MODULES = [
     name: 'Finance',
     icon: ChartLineUp,
     href: '/finance',
-    color: 'text-blue-500'
+    color: 'text-green-500',
+    hoverColor: 'group-hover:text-green-500'
   },
   {
     id: 'inventory',
     name: 'Inventory',
     icon: Package,
     href: '/inventory',
-    color: 'text-green-500'
+    color: 'text-orange-500',
+    hoverColor: 'group-hover:text-orange-500'
   },
   {
     id: 'repairs',
     name: 'Repairs',
     icon: Wrench,
     href: '/repairs',
-    color: 'text-orange-500'
+    color: 'text-blue-500',
+    hoverColor: 'group-hover:text-blue-500'
   },
   {
     id: 'crm',
     name: 'CRM',
     icon: Users,
     href: '/crm',
-    color: 'text-purple-500'
+    color: 'text-purple-500',
+    hoverColor: 'group-hover:text-purple-500'
   }
 ]

@@ -20,9 +20,9 @@ export function AppSwitcher({ currentModule = 'finance', onModuleChange }: AppSw
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="gap-2 px-3">
+        <Button variant="ghost" className="group gap-1.5 pl-2 pr-3">
+          <span className={`font-semibold text-lg transition-colors ${current.hoverColor}`}>{current.name}</span>
           <Icon className={`h-5 w-5 ${current.color}`} weight="bold" />
-          <span className="font-bold">{current.name}</span>
           <ChevronDown className="h-4 w-4 text-muted-foreground" />
         </Button>
       </DropdownMenuTrigger>

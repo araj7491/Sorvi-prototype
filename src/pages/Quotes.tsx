@@ -1,12 +1,30 @@
 import { useState, useEffect, useCallback } from 'react'
+import { Table, Kanban } from '@phosphor-icons/react'
 import { MainLayout } from '@/components/layout/MainLayout'
 import { DataGrid } from '@/components/common/DataGrid'
 import { DataGridFilters } from '@/components/common/DataGridFilters'
+import { KanbanBoard } from '@/components/kanban/KanbanBoard'
+import { QuoteMiniList } from '@/components/quotes/QuoteMiniList'
+import { QuoteDetailPanel } from '@/components/quotes/QuoteDetailPanel'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { financeTabs } from '@/data/mockFinanceData.tsx'
 import { formatCurrency, formatDate } from '@/data/mockQuotesData'
 import { fetchQuotes } from '@/api/quotesApi'
+import { cn } from '@/lib/utils'
 import type { Quote, DataGridColumn, SortConfig, FilterConfig } from '@/types'
+
+type ViewMode = 'grid' | 'kanban'
+
+const STORAGE_KEY = 'sorvi-quotes-view'
+
+function getInitialView(): ViewMode {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY)
+    if (stored === 'grid' || stored === 'kanban') return stored
+  } catch { /* ignore */ }
+  return 'grid'
+}
 
 // Column definitions for the DataGrid
 const quoteColumns: DataGridColumn<Quote>[] = [
@@ -97,7 +115,10 @@ const quoteColumns: DataGridColumn<Quote>[] = [
 ]
 
 export function Quotes() {
-  // State for server-side operations
+  const [viewMode, setViewMode] = useState<ViewMode>(getInitialView)
+  const [selectedQuoteId, setSelectedQuoteId] = useState<string | null>(null)
+
+  // State for server-side operations (grid view)
   const [data, setData] = useState<Quote[]>([])
   const [totalRows, setTotalRows] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
@@ -111,8 +132,15 @@ export function Quotes() {
   })
   const [filters, setFilters] = useState<FilterConfig>({})
 
+  // Persist view mode
+  useEffect(() => {
+    try { localStorage.setItem(STORAGE_KEY, viewMode) } catch { /* ignore */ }
+  }, [viewMode])
+
   // Fetch data whenever pagination, sorting, or filters change
+  // Also load when selectedQuoteId is set (need data for mini list)
   const loadData = useCallback(async () => {
+    if (viewMode !== 'grid' && !selectedQuoteId) return
     setIsLoading(true)
     try {
       const response = await fetchQuotes({
@@ -128,13 +156,21 @@ export function Quotes() {
     } finally {
       setIsLoading(false)
     }
-  }, [pagination, sorting, filters])
+  }, [pagination, sorting, filters, viewMode, selectedQuoteId])
 
   useEffect(() => {
     loadData()
   }, [loadData])
 
   const pageCount = Math.ceil(totalRows / pagination.pageSize)
+
+  // When switching to kanban, close detail panel
+  const handleViewModeChange = (mode: ViewMode) => {
+    if (mode === 'kanban') {
+      setSelectedQuoteId(null)
+    }
+    setViewMode(mode)
+  }
 
   return (
     <MainLayout
@@ -143,30 +179,82 @@ export function Quotes() {
       activeTab="quotes"
       currentModule="finance"
     >
-      <div className="space-y-6">
-        {/* Page Header */}
-        <div>
-          <h1 className="text-2xl font-semibold">Quotes</h1>
-          <p className="text-muted-foreground">
-            Manage and track all quotes across your organization
-          </p>
+      <div className="flex flex-col flex-1 min-h-0 gap-6">
+        {/* Page Header - always visible */}
+        <div className="flex items-start justify-between">
+          <div>
+            <h1 className="text-2xl font-semibold">Quotes</h1>
+            <p className="text-muted-foreground">
+              Manage and track all quotes across your organization
+            </p>
+          </div>
+
+          {/* View Toggle */}
+          <div className="flex items-center gap-1 rounded-lg border bg-muted/50 p-1">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => handleViewModeChange('grid')}
+              className={cn(
+                'h-8 px-3 gap-1.5',
+                viewMode === 'grid' && 'bg-background shadow-sm'
+              )}
+            >
+              <Table size={16} weight={viewMode === 'grid' ? 'fill' : 'regular'} />
+              <span className="text-xs">Table</span>
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => handleViewModeChange('kanban')}
+              className={cn(
+                'h-8 px-3 gap-1.5',
+                viewMode === 'kanban' && 'bg-background shadow-sm'
+              )}
+            >
+              <Kanban size={16} weight={viewMode === 'kanban' ? 'fill' : 'regular'} />
+              <span className="text-xs">Board</span>
+            </Button>
+          </div>
         </div>
 
-        {/* Filters */}
-        <DataGridFilters onFiltersChange={setFilters} />
-
-        {/* Data Grid */}
-        <DataGrid
-          data={data}
-          columns={quoteColumns}
-          pageCount={pageCount}
-          totalRows={totalRows}
-          pagination={pagination}
-          onPaginationChange={setPagination}
-          sorting={sorting}
-          onSortingChange={(newSort) => setSorting(newSort || { column: 'date', direction: 'desc' })}
-          isLoading={isLoading}
-        />
+        {/* Content */}
+        {selectedQuoteId ? (
+          /* Split-panel layout */
+          <div className="grid grid-cols-12 gap-5 flex-1 min-h-0">
+            <div className="col-span-12 lg:col-span-2 min-h-0">
+              <QuoteMiniList
+                quotes={data}
+                selectedQuoteId={selectedQuoteId}
+                onSelectQuote={setSelectedQuoteId}
+              />
+            </div>
+            <div className="col-span-12 lg:col-span-10 min-h-0 overflow-hidden">
+              <QuoteDetailPanel
+                quoteId={selectedQuoteId}
+                onClose={() => setSelectedQuoteId(null)}
+              />
+            </div>
+          </div>
+        ) : viewMode === 'grid' ? (
+          <div className="space-y-6">
+            <DataGridFilters onFiltersChange={setFilters} />
+            <DataGrid
+              data={data}
+              columns={quoteColumns}
+              pageCount={pageCount}
+              totalRows={totalRows}
+              pagination={pagination}
+              onPaginationChange={setPagination}
+              sorting={sorting}
+              onSortingChange={(newSort) => setSorting(newSort || { column: 'date', direction: 'desc' })}
+              isLoading={isLoading}
+              onRowClick={(row) => setSelectedQuoteId(row.id)}
+            />
+          </div>
+        ) : (
+          <KanbanBoard />
+        )}
       </div>
     </MainLayout>
   )

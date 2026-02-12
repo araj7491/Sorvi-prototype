@@ -21,6 +21,7 @@ export function DataGrid<TData>({
   sorting,
   onSortingChange,
   isLoading = false,
+  onRowClick,
 }: DataGridProps<TData>) {
   // Convert our simplified column definitions to TanStack Table format
   const tableColumns = useMemo<ColumnDef<TData>[]>(() => {
@@ -88,7 +89,7 @@ export function DataGrid<TData>({
       {/* Table container with horizontal scroll */}
       <div className="relative overflow-auto">
         <table className="w-full border-collapse">
-          <thead className="sticky top-0 z-10 bg-muted/50 dark:bg-muted/10">
+          <thead className="sticky top-0 z-10 bg-muted/70 dark:bg-muted/25">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id} className="border-b-2 border-border/60 dark:border-border/30">
                 {headerGroup.headers.map((header) => {
@@ -163,7 +164,11 @@ export function DataGrid<TData>({
               table.getRowModel().rows.map((row) => (
                 <tr
                   key={row.id}
-                  className="border-b border-border/40 dark:border-border/20 transition-colors dark:bg-black/25 hover:bg-muted/30 dark:hover:bg-black/15"
+                  className={cn(
+                    "border-b border-border/40 dark:border-border/20 transition-colors dark:bg-black/25 hover:bg-muted/30 dark:hover:bg-black/15",
+                    onRowClick && "cursor-pointer"
+                  )}
+                  onClick={() => onRowClick?.(row.original)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <td

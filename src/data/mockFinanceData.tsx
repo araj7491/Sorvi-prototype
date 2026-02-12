@@ -10,7 +10,7 @@ import {
   ChartBar,
   Receipt
 } from '@phosphor-icons/react'
-import type { KPIData, ChartData } from '@/types'
+import type { KPIData, ChartData, QuoteStatus, KanbanStatusConfig } from '@/types'
 
 export const financeTabs = [
   {
@@ -56,6 +56,27 @@ export const financeTabs = [
     icon: <ChartBar size={20} weight="duotone" />
   },
 ]
+
+// Kanban board configuration
+export const QUOTE_STATUSES: readonly QuoteStatus[] = ['accepted', 'pending', 'declined'] as const
+
+export const quoteKanbanConfig: Record<QuoteStatus, KanbanStatusConfig> = {
+  accepted: {
+    label: 'Accepted',
+    colorDot: 'bg-green-500',
+    colorBadge: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
+  },
+  pending: {
+    label: 'Pending',
+    colorDot: 'bg-yellow-500',
+    colorBadge: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400',
+  },
+  declined: {
+    label: 'Declined',
+    colorDot: 'bg-red-500',
+    colorBadge: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
+  },
+}
 
 export const financeKPIs: Record<string, KPIData> = {
   receivables: {

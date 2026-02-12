@@ -105,6 +105,98 @@ export interface DataGridProps<TData> {
   sorting?: SortConfig
   onSortingChange?: (sort: SortConfig | undefined) => void
   isLoading?: boolean
+  onRowClick?: (row: TData) => void
+}
+
+// Quote Detail types
+export interface Address {
+  street: string
+  city: string
+  state: string
+  zip: string
+  country: string
+}
+
+export interface QuoteCustomer {
+  name: string
+  email: string
+  phone: string
+  billingAddress: Address
+  shippingAddress: Address
+}
+
+export interface QuoteLineItem {
+  id: string
+  description: string
+  partNumber: string
+  manufacturer: string
+  condition: string
+  leadTime: string
+  quantity: number
+  rate: number
+  vatPercent: number
+  amount: number
+}
+
+export interface QuoteSummary {
+  subTotal: number
+  shippingCharges: number
+  discount: number
+  tax: number
+  total: number
+}
+
+export interface QuoteDetail extends Quote {
+  quoteNumber: string
+  creationDate: string
+  pdfTemplate: string
+  customerDetails: QuoteCustomer
+  lineItems: QuoteLineItem[]
+  summary: QuoteSummary
+  filesCount: number
+  commentsCount: number
+}
+
+export interface QuoteActivity {
+  id: string
+  type: 'comment' | 'audit' | 'email' | 'status'
+  author: string
+  text: string
+  details: string | null
+  internal: boolean
+  createdAt: string
+}
+
+// Kanban types
+export type QuoteStatus = Quote['status']
+
+export interface KanbanStatusConfig {
+  label: string
+  colorDot: string
+  colorBadge: string
+}
+
+export interface KanbanColumnResponse extends PaginatedResponse<Quote> {
+  totalAmount: number
+  hasMore: boolean
+}
+
+export interface FetchKanbanColumnParams {
+  status: QuoteStatus
+  page: number
+  pageSize: number
+  sort?: SortConfig
+}
+
+export interface UpdateQuoteStatusParams {
+  quoteId: string
+  fromStatus: QuoteStatus
+  toStatus: QuoteStatus
+}
+
+export interface UpdateQuoteStatusResponse {
+  success: boolean
+  quote: Quote
 }
 
 export * from './grid'

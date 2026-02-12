@@ -33,7 +33,7 @@ export function DataGridPagination({
   const canGoNext = pageIndex < pageCount - 1
 
   return (
-    <div className="flex items-center justify-between gap-4 border-t border-border bg-muted/50 dark:bg-muted/10 px-4 py-2.5">
+    <div className="flex items-center justify-between gap-4 border-t border-border bg-muted/70 dark:bg-muted/25 px-4 py-2.5">
       {/* Results info */}
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <span>

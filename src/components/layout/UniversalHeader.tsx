@@ -21,7 +21,7 @@ export function UniversalHeader({ currentModule, fixed = false }: UniversalHeade
     )}>
       <div className="flex h-16 items-center px-4 gap-4">
         {/* Left Section: Logo + App Switcher */}
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-0">
           <Link to="/" className="flex items-center gap-2 group">
             <div className="h-8 w-8 rounded-md bg-white dark:bg-[#0E0918] flex items-center justify-center p-1 transition-opacity group-hover:opacity-80">
               <img src="/sorvi-logo.png" alt="Sorvi Logo" className="h-full w-full object-contain" />
