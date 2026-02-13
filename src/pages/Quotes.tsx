@@ -6,13 +6,16 @@ import { DataGridFilters } from '@/components/common/DataGridFilters'
 import { KanbanBoard } from '@/components/kanban/KanbanBoard'
 import { QuoteMiniList } from '@/components/quotes/QuoteMiniList'
 import { QuoteDetailPanel } from '@/components/quotes/QuoteDetailPanel'
+import { QuoteActivityPanel } from '@/components/quotes/QuoteActivityPanel'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { financeTabs } from '@/data/mockFinanceData.tsx'
 import { formatCurrency, formatDate } from '@/data/mockQuotesData'
+import { generateQuoteActivities } from '@/data/mockQuoteDetails'
 import { fetchQuotes } from '@/api/quotesApi'
 import { cn } from '@/lib/utils'
-import type { Quote, DataGridColumn, SortConfig, FilterConfig } from '@/types'
+import { useLayout } from '@/providers/LayoutProvider'
+import type { Quote, DataGridColumn, SortConfig, FilterConfig, QuoteActivity } from '@/types'
 
 type ViewMode = 'grid' | 'kanban'
 
@@ -117,6 +120,7 @@ const quoteColumns: DataGridColumn<Quote>[] = [
 export function Quotes() {
   const [viewMode, setViewMode] = useState<ViewMode>(getInitialView)
   const [selectedQuoteId, setSelectedQuoteId] = useState<string | null>(null)
+  const { layout } = useLayout()
 
   // State for server-side operations (grid view)
   const [data, setData] = useState<Quote[]>([])
@@ -131,6 +135,7 @@ export function Quotes() {
     direction: 'desc',
   })
   const [filters, setFilters] = useState<FilterConfig>({})
+  const [activities, setActivities] = useState<QuoteActivity[]>([])
 
   // Persist view mode
   useEffect(() => {
@@ -162,6 +167,12 @@ export function Quotes() {
     loadData()
   }, [loadData])
 
+  useEffect(() => {
+    if (selectedQuoteId) {
+      setActivities(generateQuoteActivities(selectedQuoteId))
+    }
+  }, [selectedQuoteId])
+
   const pageCount = Math.ceil(totalRows / pagination.pageSize)
 
   // When switching to kanban, close detail panel
@@ -179,61 +190,79 @@ export function Quotes() {
       activeTab="quotes"
       currentModule="finance"
     >
-      <div className="flex flex-col flex-1 min-h-0 gap-6">
-        {/* Page Header - always visible */}
-        <div className="flex items-start justify-between">
-          <div>
-            <h1 className="text-2xl font-semibold">Quotes</h1>
-            <p className="text-muted-foreground">
-              Manage and track all quotes across your organization
-            </p>
-          </div>
+      <div className={cn(
+        "flex flex-col flex-1 min-h-0",
+        selectedQuoteId ? "gap-0" : "gap-6"
+      )}>
+        {/* Page Header - only show when not in detail view */}
+        {!selectedQuoteId && (
+          <div className="flex items-start justify-between">
+            <div>
+              <h1 className="text-2xl font-semibold">Quotes</h1>
+              <p className="text-muted-foreground">
+                Manage and track all quotes across your organization
+              </p>
+            </div>
 
-          {/* View Toggle */}
-          <div className="flex items-center gap-1 rounded-lg border bg-muted/50 p-1">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => handleViewModeChange('grid')}
-              className={cn(
-                'h-8 px-3 gap-1.5',
-                viewMode === 'grid' && 'bg-background shadow-sm'
-              )}
-            >
-              <Table size={16} weight={viewMode === 'grid' ? 'fill' : 'regular'} />
-              <span className="text-xs">Table</span>
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => handleViewModeChange('kanban')}
-              className={cn(
-                'h-8 px-3 gap-1.5',
-                viewMode === 'kanban' && 'bg-background shadow-sm'
-              )}
-            >
-              <Kanban size={16} weight={viewMode === 'kanban' ? 'fill' : 'regular'} />
-              <span className="text-xs">Board</span>
-            </Button>
+            {/* View Toggle */}
+            <div className="flex items-center gap-1 rounded-lg border bg-muted/50 p-1">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleViewModeChange('grid')}
+                className={cn(
+                  'h-8 px-3 gap-1.5',
+                  viewMode === 'grid' && 'bg-background shadow-sm'
+                )}
+              >
+                <Table size={16} weight={viewMode === 'grid' ? 'fill' : 'regular'} />
+                <span className="text-xs">Table</span>
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleViewModeChange('kanban')}
+                className={cn(
+                  'h-8 px-3 gap-1.5',
+                  viewMode === 'kanban' && 'bg-background shadow-sm'
+                )}
+              >
+                <Kanban size={16} weight={viewMode === 'kanban' ? 'fill' : 'regular'} />
+                <span className="text-xs">Board</span>
+              </Button>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Content */}
         {selectedQuoteId ? (
-          /* Split-panel layout */
-          <div className="grid grid-cols-12 gap-5 flex-1 min-h-0">
-            <div className="col-span-12 lg:col-span-2 min-h-0">
+          /* Three-column layout (0.75:2:1 ratio ≈ 2:7:3) - Each column with equal fixed height and independent scroll */
+          <div className={cn(
+            "grid grid-cols-12 grid-rows-1 gap-3 min-h-0",
+            layout === 'classic'
+              ? "h-[calc(100vh-96px)] md:h-[calc(100vh-104px)]"
+              : "h-[calc(100vh-144px)] md:h-[calc(100vh-160px)]"
+          )}>
+            {/* Column 1: Quote Mini List (0.75 part - ~17%) - Independent scroll */}
+            <div className="col-span-12 lg:col-span-2 h-full overflow-y-auto">
               <QuoteMiniList
                 quotes={data}
                 selectedQuoteId={selectedQuoteId}
                 onSelectQuote={setSelectedQuoteId}
               />
             </div>
-            <div className="col-span-12 lg:col-span-10 min-h-0 overflow-hidden">
+
+            {/* Column 2: Quote Details Content (2 parts - ~58%) - Independent scroll */}
+            <div className="col-span-12 lg:col-span-7 h-full overflow-y-auto">
               <QuoteDetailPanel
                 quoteId={selectedQuoteId}
                 onClose={() => setSelectedQuoteId(null)}
               />
+            </div>
+
+            {/* Column 3: Activity & Comments Panel (1 part - 25%) - Independent scroll */}
+            <div className="col-span-12 lg:col-span-3 h-full overflow-y-auto">
+              <QuoteActivityPanel activities={activities} />
             </div>
           </div>
         ) : viewMode === 'grid' ? (
@@ -250,6 +279,10 @@ export function Quotes() {
               onSortingChange={(newSort) => setSorting(newSort || { column: 'date', direction: 'desc' })}
               isLoading={isLoading}
               onRowClick={(row) => setSelectedQuoteId(row.id)}
+              selectable={true}
+              onSelectionChange={(selectedRows) => {
+                console.log('Selected quotes:', selectedRows)
+              }}
             />
           </div>
         ) : (

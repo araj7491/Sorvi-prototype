@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Menu } from 'lucide-react'
 import { Sidebar } from './Sidebar'
 import { UniversalHeader } from './UniversalHeader'
+import { ContentHeader } from './ContentHeader'
 import { Footer } from './Footer'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -29,7 +30,15 @@ export function ClassicLayout({
     }
     return true
   })
+  const [isNavigating, setIsNavigating] = useState(false)
   const hasSidebar = showContentHeader && contentHeaderTabs.length > 0
+
+  // Reset navigation state when currentModule changes
+  useEffect(() => {
+    if (isNavigating) {
+      setIsNavigating(false)
+    }
+  }, [currentModule])
 
   // Handle viewport changes (for dev tools testing)
   useEffect(() => {
@@ -49,10 +58,18 @@ export function ClassicLayout({
     return () => window.removeEventListener('resize', handleResize)
   }, [sidebarOpen])
 
+  const handleNavigationStart = () => {
+    setIsNavigating(true)
+  }
+
   return (
     <div className="h-screen flex flex-col overflow-hidden">
       {/* Fixed UniversalHeader */}
-      <UniversalHeader currentModule={currentModule} fixed={true} />
+      <UniversalHeader
+        currentModule={currentModule}
+        fixed={true}
+        onNavigationStart={handleNavigationStart}
+      />
 
       {/* Fixed Sidebar - positioned between header and footer */}
       {hasSidebar && (
@@ -72,24 +89,44 @@ export function ClassicLayout({
 
       {/* Content area - with padding for fixed header, footer, and sidebar */}
       <main className={cn(
-        "flex-1 overflow-y-auto px-4 pt-20 pb-4 md:px-6 md:pb-6 bg-background relative",
+        "flex-1 overflow-y-auto bg-background relative",
         // Left padding for fixed sidebar on desktop
         hasSidebar && sidebarOpen && "md:pl-52 lg:pl-64",
         hasSidebar && !sidebarOpen && "md:pl-20",
       )}>
-        {/* Mobile menu button - only visible when there are tabs */}
-        {hasSidebar && !sidebarOpen && (
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="md:hidden fixed left-4 top-20 h-9 w-9 z-10"
-            aria-label="Toggle sidebar"
-          >
-            <Menu className="h-5 w-5" />
-          </Button>
+        {/* Loading Overlay */}
+        {isNavigating && (
+          <div className="absolute inset-0 bg-background/80 z-50 flex items-center justify-center">
+            {/* Ring Spinner */}
+            <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
+          </div>
         )}
-        {children}
+
+        {/* Content Header for mobile - shows tabs horizontally */}
+        {hasSidebar && (
+          <div className="md:hidden">
+            <ContentHeader tabs={contentHeaderTabs} activeTab={activeTab} currentModule={currentModule} />
+          </div>
+        )}
+
+        <div className={cn(
+          "px-4 pt-20 pb-4 md:px-6 md:pb-6",
+          hasSidebar && "md:hidden:pt-32"
+        )}>
+          {/* Mobile menu button - only visible when there are tabs */}
+          {hasSidebar && !sidebarOpen && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="md:hidden fixed left-4 top-20 h-9 w-9 z-10"
+              aria-label="Toggle sidebar"
+            >
+              <Menu className="h-5 w-5" />
+            </Button>
+          )}
+          {children}
+        </div>
       </main>
 
       {/* Fixed Footer */}

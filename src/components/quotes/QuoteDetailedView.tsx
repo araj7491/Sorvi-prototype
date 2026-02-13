@@ -18,7 +18,7 @@ export function QuoteDetailedView({ detail }: QuoteDetailedViewProps) {
       {/* Billing & Shipping Cards */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         {/* Billing Address */}
-        <div className="rounded-2xl border border-border/50 bg-muted/30 p-5">
+        <div className="rounded-lg border border-border/50 bg-muted/30 p-5">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               Billing Address
@@ -35,7 +35,7 @@ export function QuoteDetailedView({ detail }: QuoteDetailedViewProps) {
         </div>
 
         {/* Shipping Address */}
-        <div className="rounded-2xl border border-border/50 bg-muted/30 p-5">
+        <div className="rounded-lg border border-border/50 bg-muted/30 p-5">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               Shipping Address
@@ -53,7 +53,7 @@ export function QuoteDetailedView({ detail }: QuoteDetailedViewProps) {
       </div>
 
       {/* Line Items Table + Summary */}
-      <div className="rounded-2xl border border-border/50 bg-muted/30 overflow-hidden">
+      <div className="rounded-lg border border-border/50 bg-muted/30 overflow-hidden">
         <table className="w-full text-sm">
           <thead>
             <tr className="bg-muted/50">

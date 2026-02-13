@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import {
   PencilSimple,
   EnvelopeSimple,
@@ -6,7 +6,6 @@ import {
   FilePdf,
   ArrowsClockwise,
   X,
-  Sparkle,
   DotsThree,
   CaretDown,
   Lock,
@@ -28,11 +27,9 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
 import { fetchQuoteDetail } from '@/api/quotesApi'
-import { generateQuoteActivities } from '@/data/mockQuoteDetails'
 import { QuoteDetailedView } from './QuoteDetailedView'
 import { QuotePdfView } from './QuotePdfView'
-import { QuoteActivityPanel } from './QuoteActivityPanel'
-import type { QuoteDetail, QuoteActivity } from '@/types'
+import type { QuoteDetail } from '@/types'
 
 interface QuoteDetailPanelProps {
   quoteId: string
@@ -43,11 +40,6 @@ export function QuoteDetailPanel({ quoteId, onClose }: QuoteDetailPanelProps) {
   const [detail, setDetail] = useState<QuoteDetail | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [showPdf, setShowPdf] = useState(false)
-
-  const activities: QuoteActivity[] = useMemo(
-    () => generateQuoteActivities(quoteId),
-    [quoteId]
-  )
 
   useEffect(() => {
     let cancelled = false
@@ -84,43 +76,28 @@ export function QuoteDetailPanel({ quoteId, onClose }: QuoteDetailPanelProps) {
   const statusLabel = detail.status.charAt(0).toUpperCase() + detail.status.slice(1)
 
   return (
-    <div className="flex-1 flex flex-col min-w-0 overflow-hidden rounded-2xl border border-border bg-card">
+    <div className="flex flex-col h-full min-w-0 rounded-lg border border-border bg-card">
       {/* Unified Header Bar */}
-      <div className="flex items-center justify-between gap-4 px-6 py-4 border-b border-border/50 shrink-0">
-        {/* Left: ID + Badge + Subtitle */}
+      <div className="flex items-center justify-between gap-4 px-6 py-2.5 border-b shrink-0 bg-muted/70 dark:bg-muted/25">
+        {/* Left: Quote Number + Company Name */}
         <div className="min-w-0">
-          <div className="flex items-center gap-3">
-            <h2 className="text-xl font-semibold truncate">{detail.quoteNumber}</h2>
-            <Badge
-              variant={
-                detail.status === 'accepted' ? 'default' : detail.status === 'pending' ? 'secondary' : 'destructive'
-              }
-              className={cn(
-                'text-xs px-2 py-0.5 shrink-0',
-                detail.status === 'accepted' && 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
-                detail.status === 'pending' && 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400',
-                detail.status === 'declined' && 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
-              )}
-            >
-              {statusLabel}
-            </Badge>
-          </div>
-          <p className="text-sm text-muted-foreground mt-0.5">
-            Created by {detail.salesPerson ?? 'Unknown'} &middot; {detail.items} items
+          <h2 className="text-xl font-semibold truncate">{detail.quoteNumber}</h2>
+          <p className="text-sm text-muted-foreground mt-0.5 truncate">
+            {detail.customerDetails.name}
           </p>
         </div>
 
         {/* Right: Action Buttons */}
         <div className="flex items-center gap-1.5 shrink-0">
-          <button type="button" className="inline-flex items-center gap-2 rounded-xl border border-border bg-muted/50 px-3 py-2 text-sm hover:bg-muted transition-colors">
+          <button type="button" className="inline-flex items-center gap-2 rounded-lg border border-border bg-muted/50 px-3 py-2 text-sm hover:bg-muted transition-colors">
             <PencilSimple size={14} />
             Edit
           </button>
-          <button type="button" className="inline-flex items-center gap-2 rounded-xl border border-border bg-muted/50 px-3 py-2 text-sm hover:bg-muted transition-colors">
+          <button type="button" className="inline-flex items-center gap-2 rounded-lg border border-border bg-muted/50 px-3 py-2 text-sm hover:bg-muted transition-colors">
             <EnvelopeSimple size={14} />
             Email
           </button>
-          <button type="button" className="inline-flex items-center gap-2 rounded-xl border border-border bg-muted/50 px-3 py-2 text-sm hover:bg-muted transition-colors">
+          <button type="button" className="inline-flex items-center gap-2 rounded-lg border border-border bg-muted/50 px-3 py-2 text-sm hover:bg-muted transition-colors">
             <ShareNetwork size={14} />
             Share
           </button>
@@ -129,7 +106,7 @@ export function QuoteDetailPanel({ quoteId, onClose }: QuoteDetailPanelProps) {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button type="button" className="inline-flex items-center gap-2 rounded-xl border border-border bg-muted/50 px-3 py-2 text-sm hover:bg-muted transition-colors">
+              <button type="button" className="inline-flex items-center gap-2 rounded-lg border border-border bg-muted/50 px-3 py-2 text-sm hover:bg-muted transition-colors">
                 <FilePdf size={14} />
                 PDF/Print
                 <CaretDown size={10} />
@@ -143,7 +120,7 @@ export function QuoteDetailPanel({ quoteId, onClose }: QuoteDetailPanelProps) {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button type="button" className="inline-flex items-center gap-2 rounded-xl border border-border bg-muted/50 px-3 py-2 text-sm hover:bg-muted transition-colors">
+              <button type="button" className="inline-flex items-center gap-2 rounded-lg border border-border bg-muted/50 px-3 py-2 text-sm hover:bg-muted transition-colors">
                 <ArrowsClockwise size={14} />
                 Convert
                 <CaretDown size={10} />
@@ -158,7 +135,7 @@ export function QuoteDetailPanel({ quoteId, onClose }: QuoteDetailPanelProps) {
           {/* More Menu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button type="button" className="inline-flex items-center justify-center rounded-xl border border-border bg-muted/50 p-2 text-sm hover:bg-muted transition-colors">
+              <button type="button" className="inline-flex items-center justify-center rounded-lg border border-border bg-muted/50 p-2 text-sm hover:bg-muted transition-colors">
                 <DotsThree size={16} weight="bold" />
               </button>
             </DropdownMenuTrigger>
@@ -194,41 +171,21 @@ export function QuoteDetailPanel({ quoteId, onClose }: QuoteDetailPanelProps) {
         </div>
       </div>
 
-      {/* What's Next Section */}
-      <div className="bg-muted/30 border-b border-border/50 px-6 py-4 shrink-0">
-        <div className="flex items-start gap-3">
-          <Sparkle size={18} weight="fill" className="text-purple-500 mt-0.5 shrink-0" />
-          <div className="flex-1 min-w-0">
-            <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
-              What's Next
-            </p>
-            <p className="text-sm mt-0.5">
-              Convert this quote to an Invoice or Sales Order to proceed with the transaction.
-            </p>
-          </div>
-          <button
-            type="button"
-            className="shrink-0 bg-primary text-primary-foreground rounded-lg px-4 py-1.5 text-sm font-medium hover:bg-primary/90 transition-colors"
-          >
-            Convert
-          </button>
-        </div>
-      </div>
-
-      {/* Toggle & Status Section */}
-      <div className="px-6 py-4 border-b border-border/50 shrink-0">
-        <div className="flex flex-col gap-3">
-          <div className="flex items-center justify-end gap-2">
-            <Label htmlFor="pdf-toggle" className="text-xs text-muted-foreground cursor-pointer">
-              Show PDF View
-            </Label>
-            <Switch
-              id="pdf-toggle"
-              checked={showPdf}
-              onCheckedChange={setShowPdf}
-            />
-          </div>
-          <div className="flex items-center justify-between">
+      {/* Content Area - Full Width */}
+      <div className="flex-1 overflow-y-auto min-h-0">
+        <div className="p-6">
+          {/* Controls Bar - Left Aligned */}
+          <div className="flex items-center gap-3 mb-6">
+            <div className="flex items-center gap-2">
+              <Label htmlFor="pdf-toggle" className="text-xs text-muted-foreground cursor-pointer">
+                Show PDF View
+              </Label>
+              <Switch
+                id="pdf-toggle"
+                checked={showPdf}
+                onCheckedChange={setShowPdf}
+              />
+            </div>
             <Badge
               variant={
                 detail.status === 'accepted' ? 'default' : detail.status === 'pending' ? 'secondary' : 'destructive'
@@ -244,38 +201,24 @@ export function QuoteDetailPanel({ quoteId, onClose }: QuoteDetailPanelProps) {
             </Badge>
             <button
               type="button"
-              className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-muted/50 px-3 py-1.5 text-xs hover:bg-muted transition-colors"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-muted/50 px-3 py-1.5 text-xs hover:bg-muted transition-colors"
             >
               Template: {detail.pdfTemplate}
               <CaretDown size={10} />
             </button>
           </div>
-        </div>
-      </div>
 
-      {/* Content Grid */}
-      <div className="flex-1 overflow-y-auto">
-        <div className="grid grid-cols-12 gap-6 p-6">
-          {/* Left: Detailed View or PDF View */}
-          <div className="col-span-12 xl:col-span-8">
-            {showPdf ? (
-              <QuotePdfView />
-            ) : (
-              <QuoteDetailedView detail={detail} />
-            )}
-          </div>
-
-          {/* Right: Activity Panel */}
-          <div className="col-span-12 xl:col-span-4">
-            <div className="xl:sticky xl:top-0">
-              <QuoteActivityPanel activities={activities} />
-            </div>
-          </div>
+          {/* Quote Content */}
+          {showPdf ? (
+            <QuotePdfView />
+          ) : (
+            <QuoteDetailedView detail={detail} />
+          )}
         </div>
       </div>
 
       {/* Footer Tip */}
-      <div className="border-t border-border/50 px-5 py-3 text-xs text-muted-foreground shrink-0">
+      <div className="border-t px-5 py-3 text-xs text-muted-foreground shrink-0">
         Tip: Use keyboard shortcuts to navigate between quotes. Press <kbd className="px-1.5 py-0.5 rounded border border-border bg-muted text-[10px] font-mono">?</kbd> for help.
       </div>
     </div>

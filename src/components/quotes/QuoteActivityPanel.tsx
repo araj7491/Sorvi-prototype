@@ -107,9 +107,9 @@ export function QuoteActivityPanel({ activities }: QuoteActivityPanelProps) {
   const [comment, setComment] = useState('')
 
   return (
-    <div className="flex flex-col rounded-2xl border border-border/50 bg-card overflow-hidden">
+    <div className="flex flex-col h-full rounded-lg border border-border bg-card">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-border/50">
+      <div className="flex items-center justify-between px-4 py-3 border-b bg-muted/70 dark:bg-muted/25">
         <div className="flex items-center gap-2">
           <ClockCounterClockwise size={16} className="text-muted-foreground" />
           <span className="text-sm font-medium">Activity & Comments</span>
@@ -146,8 +146,8 @@ export function QuoteActivityPanel({ activities }: QuoteActivityPanelProps) {
       </div>
 
       {/* Comment Input */}
-      <div className="p-3 border-b border-border/50">
-        <div className="rounded-2xl border border-border bg-muted/30 p-3">
+      <div className="p-3 border-b">
+        <div className="rounded-lg border border-border bg-muted/30 p-3">
           <textarea
             value={comment}
             onChange={(e) => setComment(e.target.value)}
@@ -179,7 +179,7 @@ export function QuoteActivityPanel({ activities }: QuoteActivityPanelProps) {
       </div>
 
       {/* Timeline Feed */}
-      <div className="relative max-h-[520px] overflow-y-auto p-4">
+      <div className="relative flex-1 overflow-y-auto p-4">
         {/* Vertical connector line */}
         <div className="absolute left-[31px] top-4 bottom-4 w-px bg-border/50" />
 

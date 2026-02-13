@@ -1,13 +1,14 @@
-import { useMemo } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import {
   useReactTable,
   getCoreRowModel,
   flexRender,
 } from '@tanstack/react-table'
-import type { ColumnDef, SortingState } from '@tanstack/react-table'
+import type { ColumnDef, SortingState, RowSelectionState } from '@tanstack/react-table'
 import { CaretUp, CaretDown, CaretUpDown } from '@phosphor-icons/react'
 import type { DataGridProps } from '@/types'
 import { DataGridPagination } from './DataGridPagination'
+import { Checkbox } from '@/components/ui/checkbox'
 import { cn } from '@/lib/utils'
 
 export function DataGrid<TData>({
@@ -22,10 +23,54 @@ export function DataGrid<TData>({
   onSortingChange,
   isLoading = false,
   onRowClick,
+  selectable = false,
+  onSelectionChange,
 }: DataGridProps<TData>) {
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
+
+  // Notify parent when selection changes
+  useEffect(() => {
+    if (selectable && onSelectionChange) {
+      const selectedRows = Object.keys(rowSelection)
+        .filter(key => rowSelection[key])
+        .map(key => data[parseInt(key)])
+        .filter(Boolean)
+      onSelectionChange(selectedRows)
+    }
+  }, [rowSelection, data, selectable, onSelectionChange])
+
   // Convert our simplified column definitions to TanStack Table format
   const tableColumns = useMemo<ColumnDef<TData>[]>(() => {
-    return columns.map((col) => ({
+    const cols: ColumnDef<TData>[] = []
+
+    // Add selection column if enabled
+    if (selectable) {
+      cols.push({
+        id: 'select',
+        header: ({ table }) => (
+          <Checkbox
+            checked={table.getIsAllPageRowsSelected()}
+            onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+            aria-label="Select all rows"
+          />
+        ),
+        cell: ({ row }) => (
+          <Checkbox
+            checked={row.getIsSelected()}
+            onCheckedChange={(value) => row.toggleSelected(!!value)}
+            aria-label="Select row"
+          />
+        ),
+        size: 50,
+        minSize: 40,
+        maxSize: 100,
+        enableSorting: false,
+        enableResizing: true,
+      })
+    }
+
+    // Add data columns
+    cols.push(...columns.map((col) => ({
       id: col.id,
       header: col.header,
       accessorKey: col.accessorKey as string,
@@ -35,8 +80,10 @@ export function DataGrid<TData>({
       size: col.size,
       minSize: col.minSize ?? 50,
       maxSize: col.maxSize ?? 500,
-    }))
-  }, [columns])
+    })))
+
+    return cols
+  }, [columns, selectable])
 
   // Convert our sorting format to TanStack Table format
   const sortingState: SortingState = useMemo(() => {
@@ -56,7 +103,10 @@ export function DataGrid<TData>({
     state: {
       pagination,
       sorting: sortingState,
+      rowSelection,
     },
+    enableRowSelection: selectable,
+    onRowSelectionChange: setRowSelection,
     onPaginationChange: (updater) => {
       const newPagination =
         typeof updater === 'function' ? updater(pagination) : updater
@@ -78,7 +128,7 @@ export function DataGrid<TData>({
   })
 
   return (
-    <div className="w-full mb-6 rounded-lg border border-border/50 bg-card shadow-sm dark:bg-card/50">
+    <div className="w-full mb-6 rounded-lg border border-border/50 bg-card shadow-sm dark:bg-card">
       {/* Title */}
       {title && (
         <div className="border-b border-border/50 dark:border-border/20 px-4 py-2.5">
@@ -100,7 +150,7 @@ export function DataGrid<TData>({
                     <th
                       key={header.id}
                       className={cn(
-                        'border-r border-border/40 dark:border-border/20 px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider',
+                        'relative border-r border-border/40 dark:border-border/20 px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider',
                         canSort && 'cursor-pointer select-none hover:bg-muted/70 dark:hover:bg-muted/30',
                         'last:border-r-0'
                       )}
@@ -145,7 +195,7 @@ export function DataGrid<TData>({
             {isLoading ? (
               <tr>
                 <td
-                  colSpan={columns.length}
+                  colSpan={columns.length + (selectable ? 1 : 0)}
                   className="border-b border-border/40 dark:border-border/20 px-4 py-8 text-center text-sm text-muted-foreground"
                 >
                   Loading...
@@ -154,7 +204,7 @@ export function DataGrid<TData>({
             ) : table.getRowModel().rows.length === 0 ? (
               <tr>
                 <td
-                  colSpan={columns.length}
+                  colSpan={columns.length + (selectable ? 1 : 0)}
                   className="border-b border-border/40 dark:border-border/20 px-4 py-8 text-center text-sm text-muted-foreground"
                 >
                   No results found
@@ -165,7 +215,7 @@ export function DataGrid<TData>({
                 <tr
                   key={row.id}
                   className={cn(
-                    "border-b border-border/40 dark:border-border/20 transition-colors dark:bg-black/25 hover:bg-muted/30 dark:hover:bg-black/15",
+                    "border-b border-border/40 dark:border-border/20 transition-colors hover:bg-muted/30 dark:hover:bg-muted/20",
                     onRowClick && "cursor-pointer"
                   )}
                   onClick={() => onRowClick?.(row.original)}

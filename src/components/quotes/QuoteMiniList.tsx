@@ -1,6 +1,12 @@
 import { useState, useMemo } from 'react'
-import { MagnifyingGlass } from '@phosphor-icons/react'
+import { ListBullets, CaretDown } from '@phosphor-icons/react'
 import { Badge } from '@/components/ui/badge'
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from '@/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
 import { formatDate } from '@/data/mockQuotesData'
 import type { Quote } from '@/types'
@@ -68,32 +74,49 @@ export function QuoteMiniList({
   selectedQuoteId,
   onSelectQuote,
 }: QuoteMiniListProps) {
-  const [search, setSearch] = useState('')
+  const [statusFilter, setStatusFilter] = useState<'all' | 'accepted' | 'pending' | 'declined'>('all')
 
   const filteredQuotes = useMemo(() => {
-    if (!search.trim()) return quotes
-    const term = search.toLowerCase()
-    return quotes.filter(
-      (q) =>
-        q.id.toLowerCase().includes(term) ||
-        q.customer.toLowerCase().includes(term)
-    )
-  }, [quotes, search])
+    if (statusFilter === 'all') return quotes
+    return quotes.filter((q) => q.status === statusFilter)
+  }, [quotes, statusFilter])
 
   return (
-    <div className="flex flex-col rounded-2xl border border-border bg-card overflow-hidden h-full">
-      {/* Search */}
-      <div className="p-2.5">
-        <div className="flex items-center gap-2 rounded-xl border border-border bg-muted/30 px-3 py-1.5">
-          <MagnifyingGlass size={14} className="text-muted-foreground shrink-0" />
-          <input
-            type="text"
-            placeholder="Search quotes..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground/60"
-          />
+    <div className="flex flex-col h-full rounded-lg border border-border bg-card">
+      {/* Header */}
+      <div className="flex items-center justify-between px-4 py-3 border-b bg-muted/70 dark:bg-muted/25">
+        <div className="flex items-center gap-2">
+          <ListBullets size={16} className="text-muted-foreground" />
+          <span className="text-sm font-medium">Quotes</span>
+          <span className="rounded-full border px-2 py-0.5 text-[11px] text-muted-foreground">
+            {filteredQuotes.length}
+          </span>
         </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button
+              type="button"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background px-2.5 py-1.5 text-xs hover:bg-muted transition-colors"
+            >
+              Status: {statusFilter.charAt(0).toUpperCase() + statusFilter.slice(1)}
+              <CaretDown size={10} />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => setStatusFilter('all')}>
+              All
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setStatusFilter('accepted')}>
+              Accepted
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setStatusFilter('pending')}>
+              Pending
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setStatusFilter('declined')}>
+              Declined
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       {/* Scrollable list */}

@@ -106,6 +106,8 @@ export interface DataGridProps<TData> {
   onSortingChange?: (sort: SortConfig | undefined) => void
   isLoading?: boolean
   onRowClick?: (row: TData) => void
+  selectable?: boolean
+  onSelectionChange?: (selectedRows: TData[]) => void
 }
 
 // Quote Detail types
