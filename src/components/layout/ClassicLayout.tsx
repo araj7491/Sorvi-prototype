@@ -30,15 +30,7 @@ export function ClassicLayout({
     }
     return true
   })
-  const [isNavigating, setIsNavigating] = useState(false)
   const hasSidebar = showContentHeader && contentHeaderTabs.length > 0
-
-  // Reset navigation state when currentModule changes
-  useEffect(() => {
-    if (isNavigating) {
-      setIsNavigating(false)
-    }
-  }, [currentModule])
 
   // Handle viewport changes (for dev tools testing)
   useEffect(() => {
@@ -58,17 +50,12 @@ export function ClassicLayout({
     return () => window.removeEventListener('resize', handleResize)
   }, [sidebarOpen])
 
-  const handleNavigationStart = () => {
-    setIsNavigating(true)
-  }
-
   return (
     <div className="h-screen flex flex-col overflow-hidden">
       {/* Fixed UniversalHeader */}
       <UniversalHeader
         currentModule={currentModule}
         fixed={true}
-        onNavigationStart={handleNavigationStart}
       />
 
       {/* Fixed Sidebar - positioned between header and footer */}
@@ -94,14 +81,6 @@ export function ClassicLayout({
         hasSidebar && sidebarOpen && "md:pl-52 lg:pl-64",
         hasSidebar && !sidebarOpen && "md:pl-20",
       )}>
-        {/* Loading Overlay */}
-        {isNavigating && (
-          <div className="absolute inset-0 bg-background/80 z-50 flex items-center justify-center">
-            {/* Ring Spinner */}
-            <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
-          </div>
-        )}
-
         {/* Content Header for mobile - shows tabs horizontally */}
         {hasSidebar && (
           <div className="md:hidden">

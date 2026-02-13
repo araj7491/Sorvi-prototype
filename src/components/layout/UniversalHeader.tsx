@@ -14,7 +14,6 @@ import { cn } from '@/lib/utils'
 interface UniversalHeaderProps {
   currentModule?: string
   fixed?: boolean
-  onNavigationStart?: () => void
 }
 
 // Module-specific colors
@@ -33,7 +32,7 @@ const getModuleColors = (module?: string) => {
   }
 }
 
-export function UniversalHeader({ currentModule, fixed = false, onNavigationStart }: UniversalHeaderProps) {
+export function UniversalHeader({ currentModule, fixed = false }: UniversalHeaderProps) {
   const navigate = useNavigate()
 
   const [favorites, setFavorites] = useState<string[]>(() => {
@@ -63,18 +62,13 @@ export function UniversalHeader({ currentModule, fixed = false, onNavigationStar
 
   // Handle favorite app click - move to first position and navigate
   const handleFavoriteClick = (moduleId: string, href: string) => {
-    // Trigger loading state
-    onNavigationStart?.()
-
     // Reorder favorites to move clicked item to first position
     const newFavorites = [moduleId, ...favorites.filter(id => id !== moduleId)]
     setFavorites(newFavorites)
     localStorage.setItem('sorvi-favorite-apps', JSON.stringify(newFavorites))
 
-    // Brief delay for loading spinner visibility
-    setTimeout(() => {
-      navigate(href)
-    }, 200)
+    // Navigate immediately
+    navigate(href)
   }
 
   return (

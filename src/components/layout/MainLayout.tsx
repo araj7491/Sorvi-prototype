@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import { useLayout } from '@/providers/LayoutProvider'
 import { UniversalHeader } from './UniversalHeader'
 import { ContentHeader } from './ContentHeader'
@@ -23,18 +22,6 @@ export function MainLayout({
   currentModule
 }: MainLayoutProps) {
   const { layout } = useLayout()
-  const [isNavigating, setIsNavigating] = useState(false)
-
-  // Reset navigation state when currentModule changes
-  useEffect(() => {
-    if (isNavigating) {
-      setIsNavigating(false)
-    }
-  }, [currentModule])
-
-  const handleNavigationStart = () => {
-    setIsNavigating(true)
-  }
 
   if (layout === 'classic') {
     return (
@@ -57,7 +44,6 @@ export function MainLayout({
       <UniversalHeader
         currentModule={currentModule}
         fixed={false}
-        onNavigationStart={handleNavigationStart}
       />
 
       {/* Content Header - positioned after UniversalHeader */}
@@ -66,14 +52,6 @@ export function MainLayout({
       )}
 
       <div className="flex-1 overflow-y-auto bg-background relative">
-        {/* Loading Overlay */}
-        {isNavigating && (
-          <div className="absolute inset-0 bg-background/80 z-50 flex items-center justify-center">
-            {/* Ring Spinner */}
-            <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
-          </div>
-        )}
-
         <div className={cn(
           "px-4 pb-4 md:px-6 md:pb-6",
           hasContentHeader ? "pt-4 md:pt-6" : "pt-4 md:pt-6"
