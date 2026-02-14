@@ -1,4 +1,4 @@
-import sorviLogo from '@/assets/Adobe Express - file.png'
+import sorviLogo from '@/assets/sorviloadingicon.svg'
 
 interface LoadingSpinnerProps {
   showText?: boolean

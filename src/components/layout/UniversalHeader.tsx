@@ -78,7 +78,7 @@ export function UniversalHeader({ currentModule, fixed = false }: UniversalHeade
     )}>
       <div className="relative flex h-16 items-center px-4 gap-4">
         {/* Left Section: Apps Icon + Logo + Suite Branding + Favorite Apps */}
-        <div className="flex items-center gap-1.5 lg:gap-2 flex-1">
+        <div className="flex items-center gap-1 flex-1">
           {/* Apps Grid Icon */}
           <AppsGrid currentModule={currentModule} onFavoritesChange={setFavorites}>
             <Button
