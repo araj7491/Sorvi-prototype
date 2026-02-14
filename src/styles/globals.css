@@ -84,10 +84,7 @@
     0% {
       transform: rotate(-40deg);
     }
-    70% {
-      transform: rotate(320deg);
-    }
-    75% {
+    90% {
       transform: rotate(320deg);
     }
     100% {
@@ -96,6 +93,6 @@
   }
 
   .animate-circular-orbit {
-    animation: circular-orbit 3s ease-in-out infinite;
+    animation: circular-orbit 2s ease-in-out infinite;
   }
 }
