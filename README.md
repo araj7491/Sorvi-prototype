@@ -1,6 +1,6 @@
 # Sorvi - Business SaaS Platform Prototype
 
-A modern, responsive prototype for **Sorvi** - a comprehensive business SaaS suite application with modules for Finance, Inventory, Repairs, and CRM.
+A modern, responsive prototype for **Sorvi** - a comprehensive business SaaS suite application with modules for Finance, Inventory, and Repairs.
 
 ## Features
 
@@ -9,7 +9,7 @@ A modern, responsive prototype for **Sorvi** - a comprehensive business SaaS sui
 - ✅ **Dark/Light Theme**: Fully functional theme switching with system preference detection
 - ✅ **Responsive Design**: Mobile-first approach with support for all screen sizes
 - ✅ **Finance Dashboard**: Complete with KPI cards, charts, and data tables
-- ✅ **Module Navigation**: Easy switching between Finance, Inventory, Repairs, and CRM
+- ✅ **Module Navigation**: Easy switching between Finance, Inventory, and Repairs
 - ✅ **Enterprise-Grade Design**: Clean, professional appearance avoiding "AI-made" look
 
 ## Tech Stack
@@ -34,7 +34,7 @@ src/
 │   ├── layout/          # Layout components (Header, Footer, MainLayout)
 │   ├── dashboard/       # Dashboard components (KPICard, ChartWidget, GridLayout)
 │   └── common/          # Common components (AppSwitcher, ProfileMenu, etc.)
-├── pages/               # Page components (Finance, Inventory, Repairs, CRM)
+├── pages/               # Page components (Finance, Inventory, Repairs)
 ├── providers/           # React context providers (ThemeProvider)
 ├── hooks/               # Custom React hooks
 ├── lib/                 # Utility functions
@@ -103,7 +103,7 @@ npm run dev
 - Recent transactions table
 - Full navigation with tabs
 
-### Inventory, Repairs, CRM (Placeholder)
+### Inventory, Repairs (Placeholder)
 - Coming soon pages
 - Navigation structure in place
 - Ready for future implementation
@@ -117,7 +117,7 @@ Features explicitly deferred for later phases:
 - Global search functionality (Cmd+K)
 - Widget customization and saved layouts
 - TanStack Query for data fetching
-- Full implementation of Inventory, Repairs, and CRM modules
+- Full implementation of Inventory and Repairs modules
 - Authentication and user management
 - Backend integration and API calls
 

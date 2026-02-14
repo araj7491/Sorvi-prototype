@@ -67,33 +67,12 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        "elliptical-orbit": {
+        "circular-orbit": {
           "0%": {
-            transform: "translate(0px, -50px)",
-          },
-          "12.5%": {
-            transform: "translate(35px, -35px)",
-          },
-          "25%": {
-            transform: "translate(50px, 0px)",
-          },
-          "37.5%": {
-            transform: "translate(35px, 35px)",
-          },
-          "50%": {
-            transform: "translate(0px, 50px)",
-          },
-          "62.5%": {
-            transform: "translate(-35px, 35px)",
-          },
-          "75%": {
-            transform: "translate(-50px, 0px)",
-          },
-          "87.5%": {
-            transform: "translate(-35px, -35px)",
+            transform: "rotate(0deg)",
           },
           "100%": {
-            transform: "translate(0px, -50px)",
+            transform: "rotate(360deg)",
           },
         },
         "fade-in": {
@@ -104,7 +83,7 @@ export default {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "elliptical-orbit": "elliptical-orbit 2s ease-in-out infinite",
+        "circular-orbit": "circular-orbit 3s linear infinite",
         "fade-in": "fade-in 0.2s ease-out",
       },
     },

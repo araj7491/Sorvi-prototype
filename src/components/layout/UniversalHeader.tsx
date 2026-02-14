@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { EnhancedAppSwitcher } from '@/components/common/EnhancedAppSwitcher'
 import { SearchBar } from '@/components/common/SearchBar'
 import { QuickActions } from '@/components/common/QuickActions'
 import { ProfileMenu } from '@/components/common/ProfileMenu'
 import { ThemeToggle } from '@/components/common/ThemeToggle'
 import { SorviOrbitLogo } from '@/components/common/SorviOrbitLogo'
+import { AppsIcon } from '@/components/common/AppsIcon'
+import { AppsGrid } from '@/components/common/AppsGrid'
 import { MODULES } from '@/lib/constants'
 import { Search } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -25,8 +26,6 @@ const getModuleColors = (module?: string) => {
       return 'bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-100'
     case 'repairs':
       return 'bg-red-100 dark:bg-red-950 text-red-900 dark:text-red-100'
-    case 'crm':
-      return 'bg-blue-100 dark:bg-blue-950 text-blue-900 dark:text-blue-100'
     default:
       return 'bg-header text-header-foreground'
   }
@@ -78,8 +77,20 @@ export function UniversalHeader({ currentModule, fixed = false }: UniversalHeade
       fixed ? "fixed" : "sticky"
     )}>
       <div className="relative flex h-16 items-center px-4 gap-4">
-        {/* Left Section: Logo + Suite Branding + Favorite Apps */}
-        <div className="flex items-center gap-2 lg:gap-3 flex-1">
+        {/* Left Section: Apps Icon + Logo + Suite Branding + Favorite Apps */}
+        <div className="flex items-center gap-1.5 lg:gap-2 flex-1">
+          {/* Apps Grid Icon */}
+          <AppsGrid currentModule={currentModule} onFavoritesChange={setFavorites}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-9 w-9 shrink-0 hover:bg-transparent group/apps data-[state=open]:bg-transparent"
+              aria-label="Apps"
+            >
+              <AppsIcon className="h-5 w-5 group-hover/apps:text-black group-hover/apps:dark:text-white group-data-[state=open]/apps:text-black group-data-[state=open]/apps:dark:text-white" />
+            </Button>
+          </AppsGrid>
+
           {/* Logo with Suite Branding */}
           <Link to="/" className="flex items-center gap-2 group shrink-0">
             <div className="h-8 w-8 flex items-center justify-center transition-opacity group-hover:opacity-80">
@@ -115,12 +126,8 @@ export function UniversalHeader({ currentModule, fixed = false }: UniversalHeade
           )}
         </div>
 
-        {/* Center Section: App Switcher + Search Bar - Absolutely Centered */}
-        <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-3 w-full max-w-2xl px-4">
-          <EnhancedAppSwitcher
-            currentModule={currentModule}
-            onFavoritesChange={setFavorites}
-          />
+        {/* Center Section: Search Bar - Absolutely Centered */}
+        <div className="absolute left-1/2 -translate-x-1/2 w-full max-w-2xl px-4">
           <SearchBar />
         </div>
 

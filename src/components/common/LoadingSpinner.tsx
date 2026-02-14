@@ -19,13 +19,18 @@ export function LoadingSpinner({ showText = false, text = 'Loading...' }: Loadin
           />
         </div>
 
-        {/* Orbiting dot - matches logo's blue dot */}
-        {/* Position at center, let animation move it in elliptical orbit */}
-        <div className="absolute top-1/2 left-1/2 -ml-1.5 -mt-1.5">
+        {/* Orbiting dot - independent circular path */}
+        <div
+          className="absolute left-1/2 animate-circular-orbit"
+          style={{ width: '0', height: '0', top: 'calc(50% + 3px)' }}
+        >
           <div
-            className="w-3 h-3 rounded-full animate-elliptical-orbit shadow-lg"
+            className="w-3 h-3 rounded-full shadow-lg"
             style={{
               background: 'linear-gradient(135deg, #7DD3FC 0%, #3B82F6 100%)',
+              position: 'absolute',
+              left: '30px',
+              top: '-6px',
             }}
           />
         </div>

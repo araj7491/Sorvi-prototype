@@ -11,7 +11,16 @@ import {
 interface DataGridPaginationProps {
   pageIndex: number
   pageSize: number
-  pageCount: number
+  pageCount:
+  
+  
+  
+  
+  
+  
+  
+  
+  number
   totalRows: number
   onPageChange: (pageIndex: number) => void
   onPageSizeChange: (pageSize: number) => void

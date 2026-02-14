@@ -2,7 +2,6 @@ import {
   ChartLineUp,
   Package,
   Wrench,
-  Users,
   type Icon
 } from '@phosphor-icons/react'
 
@@ -51,16 +50,5 @@ export const MODULES: AppModule[] = [
     category: 'operations',
     description: 'Service orders and maintenance tracking',
     keywords: ['service', 'maintenance', 'fix', 'tickets', 'jobs']
-  },
-  {
-    id: 'crm',
-    name: 'CRM',
-    icon: Users,
-    href: '/crm',
-    color: 'text-blue-500',
-    hoverColor: 'group-hover:text-blue-500',
-    category: 'customer',
-    description: 'Customer relationship and contact management',
-    keywords: ['customers', 'contacts', 'clients', 'relationships', 'leads']
   }
 ]

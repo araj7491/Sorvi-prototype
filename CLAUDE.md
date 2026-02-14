@@ -1,7 +1,7 @@
 # Sorvi Prototype - Claude Code Assistant Guide
 
 ## Project Overview
-Sorvi is a React-based business management application prototype with multiple modules (Finance, Inventory, Repairs, CRM). The project emphasizes flexibility, accessibility, and modern UI patterns.
+Sorvi is a React-based business management application prototype with multiple modules (Finance, Inventory, Repairs). The project emphasizes flexibility, accessibility, and modern UI patterns.
 
 ## Tech Stack
 - **Framework**: React 19.2 + TypeScript
@@ -120,7 +120,7 @@ src/
 │   ├── dashboard/       # Dashboard-specific widgets
 │   └── settings/        # Settings dialog and selectors
 ├── providers/           # React Context providers (Theme, Layout)
-├── pages/               # Route pages (Finance, Inventory, Repairs, CRM)
+├── pages/               # Route pages (Finance, Inventory, Repairs)
 ├── lib/                 # Utilities (cn function)
 ├── types/               # TypeScript type definitions
 └── styles/              # Global CSS and Tailwind styles
