@@ -12,11 +12,11 @@ export function Finance() {
   const handleTestLoading = () => {
     console.log('🔴 Test button clicked!')
     showLoading('Loading data...')
-    // Simulate loading for 3 seconds
+    // Simulate loading for 10 seconds to see multiple animation cycles
     setTimeout(() => {
-      console.log('🔴 Hiding loading after 3 seconds')
+      console.log('🔴 Hiding loading after 10 seconds')
       hideLoading()
-    }, 3000)
+    }, 10000)
   }
 
   return (
