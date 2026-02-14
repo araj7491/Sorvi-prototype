@@ -30,7 +30,7 @@ export function ChartWidget({
   data,
   height = 300,
   dataKeys = [],
-  colors = ['#3b82f6', '#a78bfa', '#10b981'],
+  colors = ['#3b82f6', '#60a5fa', '#10b981'],
 }: ChartWidgetProps) {
   const renderChart = () => {
     const chartProps = {

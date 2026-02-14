@@ -47,7 +47,7 @@ function ActivityIcon({ type, internal }: { type: QuoteActivity['type']; interna
       )
     case 'email':
       return (
-        <div className={cn(base, 'bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400')}>
+        <div className={cn(base, 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400')}>
           <Envelope size={14} weight="fill" />
         </div>
       )

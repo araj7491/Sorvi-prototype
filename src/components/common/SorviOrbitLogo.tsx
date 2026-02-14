@@ -18,7 +18,7 @@ export function SorviOrbitLogo({ className, showOrbit = true }: SorviOrbitLogoPr
       {showOrbit && (
         <>
           {/* Small space before Orbit */}
-          <span className="w-1.5" />
+          <span className="w-1" />
 
           {/* "Orbit" text */}
           <span>Orbit</span>

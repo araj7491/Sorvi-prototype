@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
-import { Table, Kanban } from '@phosphor-icons/react'
+import { useNavigate } from 'react-router-dom'
+import { Table, Kanban, Plus } from '@phosphor-icons/react'
 import { MainLayout } from '@/components/layout/MainLayout'
 import { DataGrid } from '@/components/common/DataGrid'
 import { DataGridFilters } from '@/components/common/DataGridFilters'
@@ -118,6 +119,7 @@ const quoteColumns: DataGridColumn<Quote>[] = [
 ]
 
 export function Quotes() {
+  const navigate = useNavigate()
   const [viewMode, setViewMode] = useState<ViewMode>(getInitialView)
   const [selectedQuoteId, setSelectedQuoteId] = useState<string | null>(null)
   const { layout } = useLayout()
@@ -204,32 +206,40 @@ export function Quotes() {
               </p>
             </div>
 
-            {/* View Toggle */}
-            <div className="flex items-center gap-1 rounded-lg border bg-muted/50 p-1">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => handleViewModeChange('grid')}
-                className={cn(
-                  'h-8 px-3 gap-1.5',
-                  viewMode === 'grid' && 'bg-background shadow-sm'
-                )}
-              >
-                <Table size={16} weight={viewMode === 'grid' ? 'fill' : 'regular'} />
-                <span className="text-xs">Table</span>
+            <div className="flex items-center gap-3">
+              {/* Create Quote Button */}
+              <Button onClick={() => navigate('/finance/quotes/create')}>
+                <Plus size={16} />
+                Create Quote
               </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => handleViewModeChange('kanban')}
-                className={cn(
-                  'h-8 px-3 gap-1.5',
-                  viewMode === 'kanban' && 'bg-background shadow-sm'
-                )}
-              >
-                <Kanban size={16} weight={viewMode === 'kanban' ? 'fill' : 'regular'} />
-                <span className="text-xs">Board</span>
-              </Button>
+
+              {/* View Toggle */}
+              <div className="flex items-center gap-1 rounded-lg border bg-muted/50 p-1">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleViewModeChange('grid')}
+                  className={cn(
+                    'h-8 px-3 gap-1.5',
+                    viewMode === 'grid' && 'bg-background shadow-sm'
+                  )}
+                >
+                  <Table size={16} weight={viewMode === 'grid' ? 'fill' : 'regular'} />
+                  <span className="text-xs">Table</span>
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleViewModeChange('kanban')}
+                  className={cn(
+                    'h-8 px-3 gap-1.5',
+                    viewMode === 'kanban' && 'bg-background shadow-sm'
+                  )}
+                >
+                  <Kanban size={16} weight={viewMode === 'kanban' ? 'fill' : 'regular'} />
+                  <span className="text-xs">Board</span>
+                </Button>
+              </div>
             </div>
           </div>
         )}

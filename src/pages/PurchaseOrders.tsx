@@ -50,7 +50,7 @@ const purchaseOrderKPIs = {
       direction: 'up' as const,
       period: 'vs last month',
     },
-    icon: <TrendUp size={24} weight="duotone" className="text-purple-500" />,
+    icon: <TrendUp size={24} weight="duotone" className="text-blue-500" />,
     variant: 'default' as const,
   },
 }
@@ -191,7 +191,7 @@ function createPurchaseOrdersLayout(): GridItem[] {
         title: 'Purchase Order Value Trend',
         data: monthlyPOData,
         dataKeys: ['value'],
-        colors: ['#8b5cf6'],
+        colors: ['#3b82f6'],
       },
       size: 'medium',
       order: 5,

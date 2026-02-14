@@ -22,11 +22,11 @@ export function SorviLogoSVG({ size = 64, className = '' }: SorviLogoSVGProps) {
           <stop offset="100%" stopColor="#3B82F6" />
         </linearGradient>
 
-        {/* Purple gradient for bottom ribbon */}
+        {/* Blue gradient for bottom ribbon */}
         <linearGradient id="purpleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#C084FC" />
-          <stop offset="50%" stopColor="#A855F7" />
-          <stop offset="100%" stopColor="#7C3AED" />
+          <stop offset="0%" stopColor="#60A5FA" />
+          <stop offset="50%" stopColor="#3B82F6" />
+          <stop offset="100%" stopColor="#2563EB" />
         </linearGradient>
 
         {/* Radial gradient for the dot */}
@@ -43,7 +43,7 @@ export function SorviLogoSVG({ size = 64, className = '' }: SorviLogoSVGProps) {
         opacity="0.95"
       />
 
-      {/* Purple bottom ribbon - complementary S curve */}
+      {/* Blue bottom ribbon - complementary S curve */}
       <path
         d="M 410 430 Q 340 470, 210 430 Q 140 410, 130 330 Q 125 270, 190 230 Q 240 200, 290 210 L 310 250 Q 270 240, 230 260 Q 180 285, 185 325 Q 190 370, 240 390 Q 310 420, 370 400 Q 420 380, 420 330 Q 420 290, 390 260 L 410 220 Q 460 260, 460 330 Q 460 410, 410 430 Z"
         fill="url(#purpleGradient)"

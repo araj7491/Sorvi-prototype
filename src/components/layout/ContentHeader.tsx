@@ -16,7 +16,7 @@ export function ContentHeader({ tabs, activeTab, currentModule }: ContentHeaderP
   return (
     <div className="relative bg-gray-50/50 dark:bg-gray-950 backdrop-blur-lg backdrop-saturate-150 z-30 h-12 shrink-0">
       {/* Gradient border at bottom */}
-      <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-[#7DD3FC] via-[#3B82F6] via-[#8B5CF6] to-[#6366F1]" />
+      <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-[#7DD3FC] via-[#3B82F6] via-[#3B82F6] to-[#1D4ED8]" />
 
       <div className="flex items-end h-12 gap-1">
         {/* Scrollable Tabs */}
@@ -37,7 +37,7 @@ export function ContentHeader({ tabs, activeTab, currentModule }: ContentHeaderP
               {/* The Active Tab Body with Gradient Border */}
               {activeTab === tab.id && (
                 <>
-                  <div className="absolute top-0 left-0 right-0 -bottom-[1px] p-[1px] rounded-t-lg bg-gradient-to-r from-[#7DD3FC] via-[#3B82F6] via-[#8B5CF6] to-[#6366F1]">
+                  <div className="absolute top-0 left-0 right-0 -bottom-[1px] p-[1px] rounded-t-lg bg-gradient-to-r from-[#7DD3FC] via-[#3B82F6] via-[#3B82F6] to-[#1D4ED8]">
                     <div className="w-full h-full bg-background rounded-t-lg" />
 
                     {/* Left Bottom Curve */}

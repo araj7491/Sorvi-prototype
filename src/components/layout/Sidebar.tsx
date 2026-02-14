@@ -15,7 +15,7 @@ interface SidebarProps {
 export function Sidebar({ tabs, activeTab, isOpen = true, onToggle, onLinkClick }: SidebarProps) {
   return (
     <aside className={cn(
-        "flex flex-col border-r bg-gray-50 dark:bg-[#0F0D20] transition-all duration-300",
+        "flex flex-col border-r bg-gray-50 dark:bg-[#0C1220] transition-all duration-300",
         // Fixed position between header (top-16) and bottom edge on all screen sizes
         "fixed left-0 top-16 bottom-0 z-30",
         // Mobile: slide in/out, Desktop: always visible

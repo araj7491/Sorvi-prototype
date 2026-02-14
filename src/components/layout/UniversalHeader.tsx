@@ -92,12 +92,12 @@ export function UniversalHeader({ currentModule, fixed = false }: UniversalHeade
           </AppsGrid>
 
           {/* Logo with Suite Branding */}
-          <Link to="/" className="flex items-center gap-2 group shrink-0">
+          <Link to="/" className="flex items-center gap-1 group shrink-0">
             <div className="h-8 w-8 flex items-center justify-center transition-opacity group-hover:opacity-80">
               <img src="/sorvi-logo.svg" alt="Sorvi Logo" className="h-full w-full object-contain" />
             </div>
             <div className="hidden md:inline">
-              <SorviOrbitLogo className="group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:to-purple-600 group-hover:bg-clip-text group-hover:text-transparent" />
+              <SorviOrbitLogo className="group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:to-blue-600 group-hover:bg-clip-text group-hover:text-transparent" />
             </div>
           </Link>
 
