@@ -20,6 +20,7 @@ interface DataGridPaginationProps {
   
   
   
+  
   number
   totalRows: number
   onPageChange: (pageIndex: number) => void
