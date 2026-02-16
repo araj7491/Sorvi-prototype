@@ -97,7 +97,7 @@ export function UniversalHeader({ currentModule, fixed = false }: UniversalHeade
               <img src="/sorvi-logo.svg" alt="Sorvi Logo" className="h-full w-full object-contain" />
             </div>
             <div className="hidden md:inline">
-              <SorviOrbitLogo className="group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:to-blue-600 group-hover:bg-clip-text group-hover:text-transparent" />
+              <SorviOrbitLogo className="group-hover:bg-gradient-to-r group-hover:from-cyan-300 group-hover:via-blue-500 group-hover:to-purple-600 group-hover:bg-clip-text group-hover:text-transparent" />
             </div>
           </Link>
 

@@ -32,6 +32,8 @@ export interface ChartData {
 
 export type Layout = 'modern' | 'classic'
 
+export type MiniListContentState = 'min' | 'middle' | 'max'
+
 export interface SidebarNavItem {
   id: string
   label: string

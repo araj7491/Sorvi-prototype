@@ -78,8 +78,8 @@ export function ClassicLayout({
       <main className={cn(
         "flex-1 overflow-y-auto bg-background relative",
         // Left padding for fixed sidebar on desktop
-        hasSidebar && sidebarOpen && "md:pl-52 lg:pl-64",
-        hasSidebar && !sidebarOpen && "md:pl-20",
+        hasSidebar && sidebarOpen && "md:pl-48 lg:pl-60",
+        hasSidebar && !sidebarOpen && "md:pl-16",
       )}>
         {/* Content Header for mobile - shows tabs horizontally */}
         {hasSidebar && (
@@ -89,7 +89,7 @@ export function ClassicLayout({
         )}
 
         <div className={cn(
-          "px-4 pt-20 pb-4 md:px-6 md:pb-6",
+          "pl-2 pr-1 pt-20 pb-4 md:pl-2 md:pr-1.5 md:pb-6",
           hasSidebar && "md:hidden:pt-32"
         )}>
           {/* Mobile menu button - only visible when there are tabs */}

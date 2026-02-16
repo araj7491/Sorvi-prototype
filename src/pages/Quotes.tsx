@@ -16,6 +16,7 @@ import { generateQuoteActivities } from '@/data/mockQuoteDetails'
 import { fetchQuotes } from '@/api/quotesApi'
 import { cn } from '@/lib/utils'
 import { useLayout } from '@/providers/LayoutProvider'
+import { useResizableWidth } from '@/hooks/useResizableWidth'
 import type { Quote, DataGridColumn, SortConfig, FilterConfig, QuoteActivity } from '@/types'
 
 type ViewMode = 'grid' | 'kanban'
@@ -123,6 +124,20 @@ export function Quotes() {
   const [viewMode, setViewMode] = useState<ViewMode>(getInitialView)
   const [selectedQuoteId, setSelectedQuoteId] = useState<string | null>(null)
   const { layout } = useLayout()
+
+  // Resizable width hook for quote mini list
+  const {
+    width: miniListWidth,
+    contentState,
+    isDragging,
+    handleMouseDown,
+    resizeHandleRef,
+  } = useResizableWidth({
+    minWidth: 120,
+    maxWidth: 280,
+    defaultWidth: 280,
+    storageKey: 'sorvi-quote-minilist-width',
+  })
 
   // State for server-side operations (grid view)
   const [data, setData] = useState<Quote[]>([])
@@ -246,32 +261,45 @@ export function Quotes() {
 
         {/* Content */}
         {selectedQuoteId ? (
-          /* Three-column layout (0.75:2:1 ratio ≈ 2:7:3) - Each column with equal fixed height and independent scroll */
-          <div className={cn(
-            "grid grid-cols-12 grid-rows-1 gap-3 min-h-0",
-            layout === 'classic'
-              ? "h-[calc(100vh-96px)] md:h-[calc(100vh-104px)]"
-              : "h-[calc(100vh-144px)] md:h-[calc(100vh-160px)]"
-          )}>
-            {/* Column 1: Quote Mini List (0.75 part - ~17%) - Independent scroll */}
-            <div className="col-span-12 lg:col-span-2 h-full overflow-y-auto">
+          /* Three-column flexible layout - Each column with equal fixed height and independent scroll */
+          <div
+            className={cn(
+              'flex gap-2 min-h-0',
+              layout === 'classic'
+                ? 'h-[calc(100vh-96px)] md:h-[calc(100vh-104px)]'
+                : 'h-[calc(100vh-144px)] md:h-[calc(100vh-160px)]'
+            )}
+          >
+            {/* Column 1: Quote Mini List - resizable width */}
+            <div
+              style={{ width: `${miniListWidth}px` }}
+              className={cn(
+                'shrink-0 h-full overflow-hidden',
+                'transition-all duration-300 ease-out',
+                isDragging && 'duration-0'
+              )}
+            >
               <QuoteMiniList
                 quotes={data}
                 selectedQuoteId={selectedQuoteId}
                 onSelectQuote={setSelectedQuoteId}
+                contentState={contentState}
+                resizeHandleRef={resizeHandleRef}
+                onResizeHandleMouseDown={handleMouseDown}
+                isDragging={isDragging}
               />
             </div>
 
-            {/* Column 2: Quote Details Content (2 parts - ~58%) - Independent scroll */}
-            <div className="col-span-12 lg:col-span-7 h-full overflow-y-auto">
+            {/* Column 2: Quote Details - flex-grow to fill remaining space */}
+            <div className="flex-1 min-w-0 h-full overflow-y-auto">
               <QuoteDetailPanel
                 quoteId={selectedQuoteId}
                 onClose={() => setSelectedQuoteId(null)}
               />
             </div>
 
-            {/* Column 3: Activity & Comments Panel (1 part - 25%) - Independent scroll */}
-            <div className="col-span-12 lg:col-span-3 h-full overflow-y-auto">
+            {/* Column 3: Activity Panel - fixed width (1.33x of mini list max width: 280px × 1.33 = 372px) */}
+            <div className="w-[372px] shrink-0 h-full overflow-y-auto hidden lg:block">
               <QuoteActivityPanel activities={activities} />
             </div>
           </div>
