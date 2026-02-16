@@ -9,7 +9,7 @@ export function CreateQuote() {
       showContentHeader={true}
       contentHeaderTabs={financeTabs}
     >
-      <div className="space-y-6">
+      <div className="space-y-6 px-4">
         {/* Page Header */}
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Create New Quote</h1>

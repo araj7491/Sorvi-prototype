@@ -52,10 +52,7 @@ export function MainLayout({
       )}
 
       <div className="flex-1 overflow-y-auto bg-background relative">
-        <div className={cn(
-          "px-4 pb-4 md:px-6 md:pb-6",
-          hasContentHeader ? "pt-4 md:pt-6" : "pt-4 md:pt-6"
-        )}>
+        <div className="p-1 md:p-2">
           {children}
         </div>
       </div>

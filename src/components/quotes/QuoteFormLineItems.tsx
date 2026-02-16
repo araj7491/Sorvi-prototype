@@ -1,5 +1,4 @@
 import { Plus, Trash } from '@phosphor-icons/react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import {
@@ -53,13 +52,11 @@ export function QuoteFormLineItems({
   errors,
 }: QuoteFormLineItemsProps) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Line Items</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm min-w-[900px]">
+    <div className="space-y-6">
+      <h3 className="text-base font-semibold">Line Items</h3>
+
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm min-w-[900px]">
             <thead>
               <tr className="bg-muted/50">
                 <th className="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">
@@ -230,27 +227,26 @@ export function QuoteFormLineItems({
                 </tr>
               ))}
             </tbody>
-          </table>
-        </div>
+        </table>
+      </div>
 
-        {/* Add Line Item Button */}
-        <div className="mt-4">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={addLineItem}
-            className="gap-2"
-          >
-            <Plus size={16} />
-            Add Line Item
-          </Button>
-        </div>
+      {/* Add Line Item Button */}
+      <div className="mt-4">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={addLineItem}
+          className="gap-2"
+        >
+          <Plus size={16} />
+          Add Line Item
+        </Button>
+      </div>
 
-        {/* Error message for line items */}
-        {errors.lineItems && (
-          <p className="text-sm text-destructive mt-2">{errors.lineItems}</p>
-        )}
-      </CardContent>
-    </Card>
+      {/* Error message for line items */}
+      {errors.lineItems && (
+        <p className="text-sm text-destructive mt-2">{errors.lineItems}</p>
+      )}
+    </div>
   )
 }

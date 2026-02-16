@@ -89,8 +89,7 @@ export function ClassicLayout({
         )}
 
         <div className={cn(
-          "pl-2 pr-1 pt-20 pb-4 md:pl-2 md:pr-1.5 md:pb-6",
-          hasSidebar && "md:hidden:pt-32"
+          "p-1 pt-[68px] md:p-2 md:pt-[72px]"
         )}>
           {/* Mobile menu button - only visible when there are tabs */}
           {hasSidebar && !sidebarOpen && (

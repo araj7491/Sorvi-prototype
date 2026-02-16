@@ -125,6 +125,7 @@ export interface QuoteCustomer {
   name: string
   email: string
   phone: string
+  vatTreatment?: string
   billingAddress: Address
   shippingAddress: Address
 }

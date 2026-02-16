@@ -35,7 +35,7 @@ export function DataGridFilters({ onFiltersChange }: DataGridFiltersProps) {
   const hasActiveFilters = statusFilter !== 'all'
 
   return (
-    <div className="flex items-center gap-3 border-b border-border bg-muted/20 dark:bg-background px-4 py-3">
+    <div className="flex items-center gap-3 border-b border-border bg-muted/20 dark:bg-background py-3">
       {/* Status filter */}
       <div className="flex items-center gap-2">
         <span className="text-sm text-muted-foreground">Status:</span>

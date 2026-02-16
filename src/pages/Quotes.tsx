@@ -213,7 +213,7 @@ export function Quotes() {
       )}>
         {/* Page Header - only show when not in detail view */}
         {!selectedQuoteId && (
-          <div className="flex items-start justify-between">
+          <div className="flex items-start justify-between px-4">
             <div>
               <h1 className="text-2xl font-semibold">Quotes</h1>
               <p className="text-muted-foreground">
@@ -267,7 +267,7 @@ export function Quotes() {
               'flex gap-2 min-h-0',
               layout === 'classic'
                 ? 'h-[calc(100vh-96px)] md:h-[calc(100vh-104px)]'
-                : 'h-[calc(100vh-144px)] md:h-[calc(100vh-160px)]'
+                : 'h-[calc(100vh-140px)] md:h-[calc(100vh-152px)]'
             )}
           >
             {/* Column 1: Quote Mini List - resizable width */}
@@ -304,7 +304,7 @@ export function Quotes() {
             </div>
           </div>
         ) : viewMode === 'grid' ? (
-          <div className="space-y-6">
+          <div className="space-y-6 px-4">
             <DataGridFilters onFiltersChange={setFilters} />
             <DataGrid
               data={data}

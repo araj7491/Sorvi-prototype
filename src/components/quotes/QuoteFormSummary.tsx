@@ -1,5 +1,4 @@
 import { useMemo } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatCurrency } from '@/data/mockQuotesData'
 import type { QuoteLineItem } from '@/types'
 
@@ -27,26 +26,23 @@ export function QuoteFormSummary({ lineItems }: QuoteFormSummaryProps) {
   }, [lineItems])
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Summary</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="flex justify-end">
-          <div className="flex gap-10 text-sm">
-            <div className="space-y-1.5 text-right">
-              <p className="text-muted-foreground">Sub Total</p>
-              <p className="text-muted-foreground">VAT</p>
-              <p className="font-semibold">Total</p>
-            </div>
-            <div className="space-y-1.5 text-right">
-              <p>{formatCurrency(summary.subTotal)}</p>
-              <p>{formatCurrency(summary.tax)}</p>
-              <p className="font-semibold">{formatCurrency(summary.total)}</p>
-            </div>
+    <div className="space-y-6">
+      <h3 className="text-base font-semibold">Summary</h3>
+
+      <div className="flex justify-end">
+        <div className="flex gap-10 text-sm">
+          <div className="space-y-1.5 text-right">
+            <p className="text-muted-foreground">Sub Total</p>
+            <p className="text-muted-foreground">VAT</p>
+            <p className="font-semibold">Total</p>
+          </div>
+          <div className="space-y-1.5 text-right">
+            <p>{formatCurrency(summary.subTotal)}</p>
+            <p>{formatCurrency(summary.tax)}</p>
+            <p className="font-semibold">{formatCurrency(summary.total)}</p>
           </div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }

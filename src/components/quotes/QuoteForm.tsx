@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 import { QuoteFormHeader } from './QuoteFormHeader'
 import { QuoteFormCustomer } from './QuoteFormCustomer'
 import { QuoteFormLineItems } from './QuoteFormLineItems'
@@ -64,6 +65,7 @@ export function QuoteForm() {
       name: '',
       email: '',
       phone: '',
+      vatTreatment: '',
       billingAddress: { ...emptyAddress },
       shippingAddress: { ...emptyAddress },
     },
@@ -162,13 +164,6 @@ export function QuoteForm() {
     // Required fields
     if (!formData.date) newErrors.date = 'Date is required'
     if (!formData.customer) newErrors.customer = 'Customer is required'
-    if (!formData.customerDetails.email) newErrors.email = 'Email is required'
-
-    // Email format validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (formData.customerDetails.email && !emailRegex.test(formData.customerDetails.email)) {
-      newErrors.email = 'Invalid email format'
-    }
 
     // Line items validation
     if (formData.lineItems.length === 0) {
@@ -204,32 +199,48 @@ export function QuoteForm() {
 
   return (
     <div className="space-y-6 pb-20">
-      {/* Quote Information */}
-      <QuoteFormHeader
-        formData={formData}
-        updateField={updateField}
-        errors={errors}
-      />
+      {/* Single Card containing all sections */}
+      <Card>
+        <CardContent className="pt-6">
+          <div className="space-y-8">
+            {/* Customer Details */}
+            <QuoteFormCustomer
+              customerDetails={formData.customerDetails}
+              updateCustomerDetail={updateCustomerDetail}
+              updateAddress={updateAddress}
+              errors={errors}
+            />
 
-      {/* Customer Details */}
-      <QuoteFormCustomer
-        customerDetails={formData.customerDetails}
-        updateCustomerDetail={updateCustomerDetail}
-        updateAddress={updateAddress}
-        errors={errors}
-      />
+            {/* Divider */}
+            <div className="border-t border-border" />
 
-      {/* Line Items */}
-      <QuoteFormLineItems
-        lineItems={formData.lineItems}
-        updateLineItem={updateLineItem}
-        addLineItem={addLineItem}
-        deleteLineItem={deleteLineItem}
-        errors={errors}
-      />
+            {/* Quote Information */}
+            <QuoteFormHeader
+              formData={formData}
+              updateField={updateField}
+              errors={errors}
+            />
 
-      {/* Summary */}
-      <QuoteFormSummary lineItems={formData.lineItems} />
+            {/* Divider */}
+            <div className="border-t border-border" />
+
+            {/* Line Items */}
+            <QuoteFormLineItems
+              lineItems={formData.lineItems}
+              updateLineItem={updateLineItem}
+              addLineItem={addLineItem}
+              deleteLineItem={deleteLineItem}
+              errors={errors}
+            />
+
+            {/* Divider */}
+            <div className="border-t border-border" />
+
+            {/* Summary */}
+            <QuoteFormSummary lineItems={formData.lineItems} />
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Action Buttons */}
       <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border/50 p-4">
