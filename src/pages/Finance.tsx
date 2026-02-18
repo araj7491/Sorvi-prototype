@@ -11,7 +11,7 @@ export function Finance() {
 
   const handleTestLoading = () => {
     console.log('🔴 Test button clicked!')
-    showLoading('Loading data...')
+    showLoading('Synchronizing your workspace...')
     // Simulate loading for 10 seconds to see multiple animation cycles
     setTimeout(() => {
       console.log('🔴 Hiding loading after 10 seconds')

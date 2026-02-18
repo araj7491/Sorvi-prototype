@@ -247,6 +247,8 @@ export function QuoteFormLineItems({
       {errors.lineItems && (
         <p className="text-sm text-destructive mt-2">{errors.lineItems}</p>
       )}
+   
+   
     </div>
   )
 }
